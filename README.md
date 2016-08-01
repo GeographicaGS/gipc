@@ -1,7 +1,4 @@
-# Genesis
-
-# About
-Genesis is a base project for Backbone Applicactions based on Gulp and Browserify. 
+# GIPC
 
 
 Build
