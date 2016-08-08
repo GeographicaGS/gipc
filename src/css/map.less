@@ -1,0 +1,36 @@
+#map{
+	flex: 1 1 100%;
+}
+
+input[type=button].mapbutton{
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  background-color: @black_light;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: background-color .25s;
+  outline: none;
+  &.active{
+    background-color: @grey;
+  }
+    
+  position: absolute;
+  z-index: 2;
+  transform: translateX(calc(100% + 45px));
+  transition:transform .25s;
+  &.enable{
+    transform: translateX(0);
+  }
+	&.attributes{
+		position: absolute;
+		top: 50%;
+		right: 45px;
+		z-index: 2;
+		background-image: url('/img/GIPC-boton-paisajes.svg');
+		&.active{
+	    background-image: url('/img/GIPC-boton-paisajes-2.svg');
+	  }
+	}
+}
+

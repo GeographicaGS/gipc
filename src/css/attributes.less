@@ -1,0 +1,139 @@
+#attributes{
+	z-index: 13;
+	max-width: 1477px;
+	color:@grey_light;
+	position: absolute;
+	top: 50%;
+	right: 90px;
+	transform:translateY(-50%);
+	width: ~ "calc(100% - 180px)";
+	font-weight: 300;
+	// transition:transform .35s linear;
+	// transform: translateY(-50%) translateX(calc(100% + 90px));
+	transition:transform .2s linear, opacity .2s linear;
+	transform: translateY(-50%) translateX(45px);
+  opacity: 0;
+  pointer-events: none;
+  &.active{
+  	pointer-events: all;
+  	opacity: 1;
+  	transform: translateY(-50%) translateX(0);
+  }
+
+	h3{
+		color:@grey;
+		font-size: 46px;
+		font-weight: 600;
+		text-align: right;
+		margin-bottom: 5px;
+	}
+	.header{
+		width: 100%;
+		height: 40px;
+		background-color: @black;
+		display: flex;
+		align-items:center;
+		.all{
+			font-size: 16px;
+			margin-left: 30px;
+			transition: opacity .1s linear;
+			cursor: pointer;
+			&:before{
+				content: '';
+				display: inline-block;
+				width: 15px;
+				height: 15px;
+				background-image: url('/img/GIPC-tick.svg');
+				border-radius: 100%;
+				background-color: @grey_light;
+				position: relative;
+				top: 2px;
+				margin-right: 5px;
+			}
+			&.unselect{
+				opacity: .2;
+			}
+		}
+	}
+
+	.content{
+		display: flex;
+		background-color: @black_light;
+		padding: 24px 30px;
+		>div{
+	    flex: 1 1 auto;
+	    h4{
+	    	color:@grey;
+	    	font-size: 16px;
+	    	font-weight: 300;
+	    	margin-bottom: 15px;
+	    	margin-top: 35px;
+	    	&:first-child{
+	    		margin-top: 0;
+	    	}
+	    	&:before{
+	    		position: relative;
+	    		top:5px;
+	    		margin-right: 6px;
+	    	}
+	    	&.settlement{
+	    		&:before{
+						content: url('/img/GIPC-asentamientos.svg');
+	    		}
+	    	}
+	    	&.infrastructure{
+	    		&:before{
+						content: url('/img/GIPC-infraestructuras.svg');
+	    		}	
+	    	}
+	    	&.religion{
+	    		&:before{
+						content: url('/img/GIPC-religiosas.svg');
+	    		}	
+	    	}
+	    	&.explotation{
+	    		&:before{
+						content: url('/img/GIPC-explotacion.svg');
+	    		}	
+	    	}
+	    	&.declaration{
+	    		&:before{
+						content: url('/img/GIPC-declaracion.svg');
+	    		}	
+	    	}
+	    	&.normative{
+	    		&:before{
+						content: url('/img/GIPC-normativa.svg');
+	    		}	
+	    	}
+	    	&.geograph{
+	    		&:before{
+						content: url('/img/GIPC-geograficos.svg');
+	    		}	
+	    	}
+	    }
+	    ul{
+	    	margin-left: 32px;
+	    	li{
+	    		cursor: pointer;
+	    		font-size: 14px;
+	    		line-height: 26px;
+	    		opacity: .2;
+	    		transition: opacity .1s linear;
+	    		&.active{
+	    			opacity: 1;
+	    		}
+	    		&:before{
+	    			content: '';
+	    			display: inline-block;
+	    			width: 10px;
+	    			height: 10px;
+	    			border-radius: 100%;
+	    			background-color: @grey;
+	    			margin-right: 10px;
+	    		}
+	    	}
+	    }
+		}
+	}
+}

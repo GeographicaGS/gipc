@@ -3,7 +3,7 @@
 var $ = require('jquery'),
 		Backbone = require('backbone'),
 		App = require('./App'),
-		HomeView = require('./View/HomeView')
+		MapView = require('./View/MapView') 
 		;
 
 
@@ -20,6 +20,6 @@ module.exports = Backbone.Router.extend({
   	},
 
     home: function () {
-     this._App.showView(new HomeView().render());
+     this._App.showView(new MapView().render());
     }
 });

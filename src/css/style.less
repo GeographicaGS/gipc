@@ -1,1 +1,98 @@
-@import "src/css/home.less";
+@import "src/css/lib/Pepa/reset.less";
+@import "src/css/lib/Pepa/base.less";
+
+@white: #fff;
+@black:#171c21;
+@black_light:#1f252c;
+@black_light2:#4c5156;
+@black_light3:#797c80;
+@black_light4:#a5a8ab;
+@dark_grey: #3b4849;
+@grey: #667c80;
+@grey_light: #a3b0b3;
+@grey_light_2: #dadfe1;
+@separator_grey:#cdd0d2;
+@green:#23a880;
+@yellow:#c4ae4e;
+@blue:#0a9bcd;
+@red:#ff4800;
+
+body{
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+	height: 100vh;
+	display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  color:@black;
+  main{
+  	flex: 1 1 100%;
+  	display: flex;
+  	flex-direction: column;
+  	>div{
+  		flex: 1 1 100%;
+	  	display: flex;
+	  	flex-direction: column;
+  	}
+
+  	.leaflet-bottom.leaflet-left{
+  		bottom: 30px;
+  		left: 30px;
+	    transform: rotate(-90deg);
+	    .leaflet-control-zoom{
+				box-shadow: none;
+				.leaflet-control-zoom-in, .leaflet-control-zoom-out{
+					border:none;
+		    	border-radius: 0;
+		    	background-color: @black_light;
+		    	width: 40px;
+		    	height: 40px;
+		    	font-size: 0;
+		    }
+		    .leaflet-control-zoom-in{
+		    	border-bottom: 2px solid @black;
+		    	background-image:url('/img/GIPC-mas.svg');
+		    }
+		    .leaflet-control-zoom-out{
+		    	background-image:url('/img/GIPC-menos.svg');
+		    	transform: rotate(90deg);
+		    }
+	    }
+  	}
+
+  	.cartodb-infowindow{
+  		pointer-events: none;
+  		>div{
+  			pointer-events: all;
+  		}
+  	}
+  }
+
+  // .mapbutton{
+  //   width: 80px;
+  //   height: 80px;
+  //   border-radius: 100%;
+  //   background-color: @black_light;
+  //   background-repeat: no-repeat;
+  //   background-position: center;
+  //   transition: background-color .25s;
+  //   outline: none;
+  //   &.active{
+  //     background-color: @grey;
+  //   }
+  // }
+
+
+  footer{
+  	flex: 1 1 35px;
+  	background-color: @black_light;
+  }
+}
+
+@import "src/css/loading.less";
+@import "src/css/map.less";
+@import "src/css/intro.less";
+@import "src/css/info_landScape.less";
+@import "src/css/categoy.less";
+@import "src/css/attributes.less";
+@import "src/css/tab.less";

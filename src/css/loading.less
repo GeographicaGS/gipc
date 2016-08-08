@@ -1,0 +1,42 @@
+@keyframes load {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 1260;
+    opacity: 1;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotateZ(-90deg);
+  }
+
+  100% {
+    transform: rotateZ(270deg);;
+  }
+}
+
+.loading{
+	z-index: 9999;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	svg{
+		width: 30px;
+		// animation: rotate 5s linear forwards running infinite;
+		animation: rotate 2s linear forwards running infinite;
+		path{
+			fill: none;
+			stroke-width: 20;
+			stroke-dasharray: 629;
+			stroke: @black;
+			animation: load 2s linear forwards running infinite;
+		}
+	}
+}

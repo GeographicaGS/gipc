@@ -31,6 +31,7 @@ gulp.task('less', function () {
   return gulp.src('./src/css/style.less')
   .pipe(less().on('error', function (err) {
     console.log(err);
+    this.emit("end");
   }))
 	.pipe(cleanCSS({compatibility: 'ie8'}))
   .pipe(gulp.dest('./public/css/'));
@@ -39,7 +40,7 @@ gulp.task('less', function () {
 
 
 gulp.task('watch', function() {
-  gulp.watch('./src/**/*.*', ['browserify-debug', 'less']);
+  gulp.watch('src/**/*.*', ['browserify-debug', 'less']);
   return;
 });
 

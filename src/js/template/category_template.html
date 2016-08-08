@@ -1,0 +1,19 @@
+<div id="categories">
+	<div class="content">
+		<h3>Selecciona <br>tipos de paisaje</h3>
+		<ul class="main">
+			<%_.each(categories,function(c, i){%>
+				<li index="<%=i%>" class="active"><%=c.title%></li>
+			<%})%>
+			<li class="outstanding active">Historias destacadas</li>
+		</ul>
+	</div>
+
+	<ul class="mini">
+		<%_.each(categories,function(c, i){%>
+			<li index="<%=i%>" class="active"></li>
+		<%})%>
+		<li class="outstanding active"></li>
+	</ul>
+
+</div>
