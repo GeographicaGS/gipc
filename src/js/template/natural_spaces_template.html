@@ -1,0 +1,16 @@
+<input class="mapbutton natural" type="button" panel="natural_spaces">
+<div id="natural_spaces">
+	<h3>Espacios<br>Naturales<br>Protegidos</h3>
+	<div class="spaces">
+		<div class="header">
+			<span class="all unselect">Seleccionar todos</span>
+		</div>
+		<div class="content">
+			<ul>
+				<%_.each(spaces,function(s){%>
+					<li><%=s.title%></li>
+				<%})%>
+			</ul>
+		</div>
+	</div>
+</div>

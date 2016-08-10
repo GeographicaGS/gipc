@@ -1,5 +1,5 @@
 <div>
-	<h4 class="settlement">Asentamientos</h4>
+	<h4 class="filter settlement">Asentamientos</h4>
 	<ul>
 		<%_.each(elements.findWhere({'grupo':'Asentamientos'}).get('attributes'),function(a){%>
 			<li  class="<%=a.enable ? 'active':''%>" column="<%=a.name_column%>"><%=a.description%></li>
@@ -8,13 +8,13 @@
 </div>
 
 <div>
-	<h4 class="declaration">Declaración</h4>
+	<h4 class="filter declaration">Declaración</h4>
 	<ul>
 		<%_.each(elements.findWhere({'grupo':'Declaración'}).get('attributes'),function(a){%>
 			<li class="<%=a.enable ? 'active':''%>" column="<%=a.name_column%>"><%=a.description%></li>
 		<%})%>
 	</ul>
-	<h4 class="infrastructure">Infraestructuras</h4>
+	<h4 class="filter infrastructure">Infraestructuras</h4>
 	<ul>
 		<%_.each(elements.findWhere({'grupo':'Infraestructuras'}).get('attributes'),function(a){%>
 			<li class="<%=a.enable ? 'active':''%>" column="<%=a.name_column%>"><%=a.description%></li>
@@ -24,13 +24,13 @@
 
 
 <div>
-	<h4 class="religion">Manifestaciónes religiosas</h4>
+	<h4 class="filter religion">Manifestaciónes religiosas</h4>
 	<ul>
 		<%_.each(elements.findWhere({'grupo':'Manifestaciónes religiosas'}).get('attributes'),function(a){%>
 			<li class="<%=a.enable ? 'active':''%>" column="<%=a.name_column%>"><%=a.description%></li>
 		<%})%>
 	</ul>
-	<h4 class="normative">Normativa</h4>
+	<h4 class="filter normative">Normativa</h4>
 	<ul>
 		<%_.each(elements.findWhere({'grupo':'Normativa'}).get('attributes'),function(a){%>
 			<li class="<%=a.enable ? 'active':''%>" column="<%=a.name_column%>"><%=a.description%></li>
@@ -39,13 +39,13 @@
 </div>
 
 <div>
-	<h4 class="explotation">Sistema de explotación</h4>
+	<h4 class="filter explotation">Sistema de explotación</h4>
 	<ul>
 		<%_.each(elements.findWhere({'grupo':'Sistema de explotación'}).get('attributes'),function(a){%>
 			<li class="<%=a.enable ? 'active':''%>" column="<%=a.name_column%>"><%=a.description%></li>
 		<%})%>
 	</ul>
-	<h4 class="geograph">Referentes geográficos</h4>
+	<h4 class="filter geograph">Referentes geográficos</h4>
 	<ul>
 		<%_.each(elements.findWhere({'grupo':'Referentes geográficos'}).get('attributes'),function(a){%>
 			<li class="<%=a.enable ? 'active':''%>" column="<%=a.name_column%>"><%=a.description%></li>

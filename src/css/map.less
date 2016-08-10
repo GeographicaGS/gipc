@@ -9,7 +9,7 @@ input[type=button].mapbutton{
   background-color: @black_light;
   background-repeat: no-repeat;
   background-position: center;
-  transition: background-color .25s;
+  // transition: background-color .25s;
   outline: none;
   &.active{
     background-color: @grey;
@@ -17,20 +17,57 @@ input[type=button].mapbutton{
     
   position: absolute;
   z-index: 2;
-  transform: translateX(calc(100% + 45px));
+  transform: translateX(calc(100% + 70px));
   transition:transform .25s;
-  &.enable{
-    transform: translateX(0);
-  }
+  z-index: 1001;
+  
 	&.attributes{
-		position: absolute;
 		top: 50%;
 		right: 45px;
-		z-index: 2;
 		background-image: url('/img/GIPC-boton-paisajes.svg');
+    &.enable{
+      transform: translateX(0);
+    }
 		&.active{
 	    background-image: url('/img/GIPC-boton-paisajes-2.svg');
 	  }
 	}
+
+  &.territorial, &.natural, &.linear_system{
+    right: 45px;
+    &.enable{
+      transform: translateY(0);
+    }
+  }
+
+  &.territorial{
+    bottom: 54px;
+    transform: translateY(120px);
+    background-image: url('/img/GIPC-boton-territorial.svg');
+    &.active{
+      transform: translateY(-115px);
+      background-image: url('/img/GIPC-boton-territorial-2.svg');
+    }
+  }
+
+  &.natural, &.linear_system{
+    top:22px;
+  }
+
+  &.natural{
+    background-image: url('/img/GIPC-boton-entorno.svg');
+    &.active{
+      background-image: url('/img/GIPC-boton-entorno-2.svg');
+    }
+  }
+
+  &.linear_system{
+    transform: translateX(calc(100% + 160px));
+    right: 135px;
+    background-image: url('/img/GIPC-boton-lineales.svg');
+    &.active{
+      background-image: url('/img/GIPC-boton-lineales-2.svg');
+    }
+  }
 }
 

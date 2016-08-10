@@ -29,6 +29,23 @@ var App = module.exports = {
 	scrollTop:function(){
   	var body = $('html, body');
 	  body.animate({scrollTop:0}, '500', 'swing', function() {});
+	},
+
+	getClassByFilter:function(filter){
+		if(filter == 'Asentamientos')
+			return 'settlement';
+		if(filter == 'Declaración')
+			return 'declaration';
+		if(filter == 'Infraestructuras')
+			return 'infrastructure';
+		if(filter == 'Manifestaciónes religiosas')
+			return 'religion';
+		if(filter == 'Normativa')
+			return 'normative';
+		if(filter == 'Sistema de explotación')
+			return 'explotation';
+		if(filter == 'Referentes geográficos')
+			return 'geograph';
 	}
 
 };

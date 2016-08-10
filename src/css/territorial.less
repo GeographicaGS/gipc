@@ -1,0 +1,49 @@
+#territorial{
+	position: absolute;
+  bottom: 50px;
+	width: 100%;
+  z-index: 1000;
+
+  transform: translateY(45px);
+	opacity: 0;
+	pointer-events: none;
+	transition:transform .2s linear, opacity .2s linear;
+
+	&.active{
+		pointer-events: all;
+  	opacity: 1;
+  	transform: translateY(0);
+	}
+	
+	h3{
+		font-size: 40px;
+		color:@grey;
+		font-weight: 600;
+		margin-bottom: 5px;
+	}
+	.content{
+		height: 155px;
+		width: 100%;
+		background-color: @black_light;
+		display: flex;
+		align-items:center;
+    justify-content: center;
+
+		svg{
+			circle{
+		    transition: fill .25s;
+				cursor: pointer;
+			}
+			#textos{
+				g{
+					&.active{
+						path{
+					    transition: fill .25s;
+							fill:@white;
+						}
+					}
+				}
+			}
+		}
+	}
+}

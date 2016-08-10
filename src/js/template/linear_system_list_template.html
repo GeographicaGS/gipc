@@ -1,0 +1,22 @@
+
+<ul>
+	<%_.each(types,function(t){%>
+		<li class="type">
+			<div class="check"></div>
+			<span><%=t.tipo%></span>
+			<%if(!(t.caminos.length == 0 || t.caminos.length == 1 && t.caminos[0].camino==null)){%>
+				<img src="/img/GIPC-flecha-select.svg">
+			<%}%>
+			<ul>
+				<%_.each(t.caminos,function(c){%>
+					<%if(c.camino){%>
+						<li class="road">
+							<div class="check"></div>
+							<span><%=c.camino%></span>
+						</li>
+					<%}%>
+				<%})%>
+			</ul>
+		</li>
+	<%})%>
+</ul>

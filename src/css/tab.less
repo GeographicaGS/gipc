@@ -30,6 +30,53 @@
 			&.active{
 				opacity: 1;
 			}
+			&.yellow{
+				h5{
+					color:@yellow;
+				}	
+				.close{
+					background-color: @yellow;
+				}
+			}
+			&.green{
+				h5{
+					color:@green;
+				}	
+				.close{
+					background-color: @green;
+				}
+			}
+			&.red{
+				h5{
+					color:@red;
+				}	
+				.close{
+					background-color: @red;
+				}
+			}
+			&.blue{
+				h5{
+					color:@blue;
+				}	
+				.close{
+					background-color: @blue;
+				}
+			}
+
+		}
+
+		.close{
+			position: absolute;
+			right: 15px;
+			top: 15px;
+			width: 40px;
+			height: 40px;
+			border-radius: 100%;
+			background-image: url('/img/GIPC-cerrar.svg');
+			background-size: center;
+	    background-repeat: no-repeat;
+	    background-size: 100%;
+	    background-repeat: no-repeat;
 		}
 	}
 
@@ -39,7 +86,6 @@
 
 	.image{
 		height: 490px;
-		background-image: url('/img/gallery/86.jpg');
 		background-size: cover;
 		background-position: center; 
 		margin-bottom: 35px;
@@ -62,7 +108,7 @@
 			h3{
 				font-weight: 600;
 				font-size: 26px;
-				margin-top: 30px;
+				margin-top: 20px;
 			}
 			h4{
 				margin-top: 10px;
@@ -74,7 +120,6 @@
 				color:@grey;
 			}
 			h6{
-				text-transform: uppercase;
 				font-size: 16px;
 				font-weight: 600;
 			}
@@ -103,9 +148,6 @@
 					margin-top: 15px;
 					margin-bottom: 10px;
 					&:before{
-				    content: url(/img/GIPC-asentamientos.svg);
-						position: relative;
-						top: 5px;
 						margin-right: 10px;
 					}
 				}
@@ -133,6 +175,9 @@
 				}
 				.separator{
 					margin-top: 17px;
+					&:last-child{
+						display: none;
+					}
 				}
 			}
 			.location_image{
@@ -140,8 +185,8 @@
 				height: 330px;
 				border-radius: 100%;
 		    margin: -145px auto 0;
-				background-color: red;
 		    border: 10px solid @grey_light_2;
+		    z-index: 500;
 			}
 			.location{
 				display: block;
@@ -152,6 +197,18 @@
 			.biography{
 				h6{
 					margin-top: 24px;
+				}
+				p{
+					overflow-wrap: break-word;
+					word-wrap: break-word;
+					-ms-word-break: break-all;
+					word-break: break-all;
+					word-break: break-word;
+					-ms-hyphens: auto;
+					-moz-hyphens: auto;
+					-webkit-hyphens: auto;
+					hyphens: auto;
+			    white-space: pre-line;
 				}
 			}
 			.biography, .attributes{

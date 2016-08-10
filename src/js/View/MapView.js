@@ -6,7 +6,10 @@ var config = require('../Config.js'),
     CategoryView = require('./CategoryView'),
     AttributeView = require('./AttributeView'),
     AttributeCollection = require('../Collection/AttributeCollection'),
-    TabView = require('./TabView')
+    TabView = require('./TabView'),
+    TerritorialView = require('./TerritorialView'),
+    NaturalSpacesView = require('./NaturalSpacesView'),
+    LinearSystemView = require('./LinearSystemView')
 ;
 
 module.exports = BaseView.extend({
@@ -14,7 +17,6 @@ module.exports = BaseView.extend({
 	_template_info_window_landScape: require('../template/infoWindowLandScape_template.html'),
 
   initialize: function(options) {
-
   	this._introView = new IntroView();
   	this._categories = new CategoryCollection([
   		{
@@ -45,6 +47,7 @@ module.exports = BaseView.extend({
 
   events: {
     'click #intro': '_loadLandscapes',
+    'click #intro .choose': '_openfilters',
     'click .mapbutton': '_mapbuttonClicked',
     'click #attributes .content li, #attributes .all': '_filterLandscapes'
   },
@@ -62,6 +65,9 @@ module.exports = BaseView.extend({
 
     if(this._tabView)
       this._tabView.close();
+
+    if(this._territorialView)
+      this._territorialView.close();
 
     this.stopListening();
   },
@@ -89,6 +95,16 @@ module.exports = BaseView.extend({
     setTimeout(function(){
        _this.map.invalidateSize();
     },100);
+
+    this._territorialView = new TerritorialView({'map':this.map});
+    this.$el.append(this._territorialView.render().$el);
+
+
+    this._naturalSpacesView = new NaturalSpacesView({'map':this.map});
+    this.$el.append(this._naturalSpacesView.render().$el);
+
+    this._linearSystemView = new LinearSystemView({'map':this.map});
+    this.$el.append(this._linearSystemView.render().$el);
 	
   	return this;
   },
@@ -126,6 +142,7 @@ module.exports = BaseView.extend({
     })
     .addTo(this.map)
     .on('done', function(layer) {
+      layer.setZIndex(999);
       _this.landscapeLayer = layer
 
       _this.infowindow = cartodb.vis.Vis.addInfowindow(_this.map, layer.getSubLayer(0), ['cartodb_id', 'nombre', 'provincia','cat_color'],{
@@ -143,7 +160,7 @@ module.exports = BaseView.extend({
 
     })
     .on('error', function(err) {
-      
+      console.log(err);
     });
 
   },
@@ -157,7 +174,17 @@ module.exports = BaseView.extend({
   },
 
   _mapbuttonClicked:function(e){
+    var _this = this;
     $(e.currentTarget).toggleClass('active');
+    var others = this.$('.mapbutton.active').not(e.currentTarget);
+    _.each(others, function(el) {
+      $(el).removeClass('active');
+      _this.$('div[id=' + $(el).attr('panel') + ']').removeClass('active');
+    });
+  },
+
+  _openfilters:function(){
+    this.$('.mapbutton.attributes').trigger('click');
   }
 
 });

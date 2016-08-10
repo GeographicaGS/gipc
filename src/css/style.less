@@ -16,6 +16,26 @@
 @yellow:#c4ae4e;
 @blue:#0a9bcd;
 @red:#ff4800;
+@purple_1:#d5c6e1;
+@purple_2:#c7b3d7;
+@purple_3:#b9a0cd;
+@purple_4:#ac8cc3;
+@purple_5:#9e79b9;
+@purple_6:#9066af;
+@purple_7:#8253a5;
+@purple_8:#74409b;
+@purple_9:#662d91;
+@green_sapce_1:#227f7e;
+@green_sapce_2:#598a75;
+@green_sapce_3:#8f946c;
+@green_sapce_4:#49a075;
+@green_sapce_5:#6fc16c;
+@green_sapce_6:#617fa2;
+
+@linear_system_1:#71fff4;
+@linear_system_2:#ffb452;
+@linear_system_3:#9e516b;
+@linear_system_4:#8cc63f;
 
 body{
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -23,7 +43,7 @@ body{
 	height: 100vh;
 	display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+  overflow: hidden;
   color:@black;
   main{
   	flex: 1 1 100%;
@@ -66,22 +86,89 @@ body{
   			pointer-events: all;
   		}
   	}
+
+    h4.filter, h6.filter{
+        &:before{
+          position: relative;
+          top:5px;
+          margin-right: 6px;
+        }
+        &.settlement{
+          &:before{
+            content: url('/img/GIPC-asentamientos.svg');
+          }
+        }
+        &.infrastructure{
+          &:before{
+            content: url('/img/GIPC-infraestructuras.svg');
+          } 
+        }
+        &.religion{
+          &:before{
+            content: url('/img/GIPC-religiosas.svg');
+          } 
+        }
+        &.explotation{
+          &:before{
+            content: url('/img/GIPC-explotacion.svg');
+          } 
+        }
+        &.declaration{
+          &:before{
+            content: url('/img/GIPC-declaracion.svg');
+          } 
+        }
+        &.normative{
+          &:before{
+            content: url('/img/GIPC-normativa.svg');
+          } 
+        }
+        &.geograph{
+          &:before{
+            content: url('/img/GIPC-geograficos.svg');
+          } 
+        }
+      }
+
+      .all{
+        font-size: 16px;
+        margin-left: 30px;
+        transition: opacity .1s linear;
+        cursor: pointer;
+        &:before{
+          content: '';
+          display: inline-block;
+          width: 15px;
+          height: 15px;
+          background-image: url('/img/GIPC-tick.svg');
+          border-radius: 100%;
+          background-color: @grey_light;
+          position: relative;
+          top: 2px;
+          margin-right: 5px;
+        }
+        &.unselect{
+          opacity: .2;
+        }
+      }
+
+      .dropdown{
+        position: relative;
+        &:after{
+          content: '';
+          display: inline-block;
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-width: 5px 5px 0;
+          border-color: @grey transparent transparent transparent;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          right: 0;
+        }
+      }
   }
-
-  // .mapbutton{
-  //   width: 80px;
-  //   height: 80px;
-  //   border-radius: 100%;
-  //   background-color: @black_light;
-  //   background-repeat: no-repeat;
-  //   background-position: center;
-  //   transition: background-color .25s;
-  //   outline: none;
-  //   &.active{
-  //     background-color: @grey;
-  //   }
-  // }
-
 
   footer{
   	flex: 1 1 35px;
@@ -96,3 +183,6 @@ body{
 @import "src/css/categoy.less";
 @import "src/css/attributes.less";
 @import "src/css/tab.less";
+@import "src/css/territorial.less";
+@import "src/css/natural_spaces.less";
+@import "src/css/linear_system.less";
