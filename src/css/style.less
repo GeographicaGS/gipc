@@ -13,9 +13,13 @@
 @grey_light_2: #dadfe1;
 @separator_grey:#cdd0d2;
 @green:#23a880;
+@green_intense:#aedd64;
 @yellow:#c4ae4e;
+@yellow_intense:#ffc571;
 @blue:#0a9bcd;
+@blue_intense:#90fcf1;
 @red:#ff4800;
+@red_intense:#d6516b;
 @purple_1:#d5c6e1;
 @purple_2:#c7b3d7;
 @purple_3:#b9a0cd;
@@ -32,9 +36,9 @@
 @green_sapce_5:#6fc16c;
 @green_sapce_6:#617fa2;
 
-@linear_system_1:#71fff4;
-@linear_system_2:#ffb452;
-@linear_system_3:#9e516b;
+@linear_system_1:#ffb452;
+@linear_system_2:#9e516b;
+@linear_system_3:#71fff4;
 @linear_system_4:#8cc63f;
 
 body{
@@ -154,18 +158,64 @@ body{
 
       .dropdown{
         position: relative;
-        &:after{
-          content: '';
-          display: inline-block;
-          width: 0;
-          height: 0;
-          border-style: solid;
-          border-width: 5px 5px 0;
-          border-color: @grey transparent transparent transparent;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        &:hover{
+          span{
+            &:after{
+              transform: rotate(-180deg);
+            }
+          }
+          ul{
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+          }
+        }
+        span{
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            position: relative;
+            &:after{
+              content: '';
+              display: inline-block;
+              width: 0;
+              height: 0;
+              border-style: solid;
+              border-width: 5px 5px 0;
+              border-color: @grey transparent transparent transparent;
+              position: absolute;
+              top: 50%;
+              right: 0;
+              transition:transform .25s linear;
+          }
+        }
+        ul{
+          z-index: 1;
           position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          right: 0;
+          top: 40px;
+          left: -1px;
+          background-color: @black;
+          min-width: 110px;
+          transform: translateY(-10px);
+          opacity: 0;
+          pointer-events: none;
+          transition: transform .25s linear, opacity .25s linear;
+          li{
+            cursor: pointer;
+            transition: background-color .1s linear, color .1s linear;
+            &:hover{
+              background-color: @grey;
+              color: @black_light;
+            }
+            text-align: center;
+            font-size: 14px;
+            color:@grey;
+            height: 30px;
+            line-height: 30px;
+          }
         }
       }
   }

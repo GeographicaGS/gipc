@@ -38,21 +38,28 @@
 			background-color: @black;
 	    display: flex;
 	    color:@grey;
-	    span{
+	    .label{
 	    	line-height: 40px;
 	    	height: 100%;
-	    	&:first-child{
+	    	// &:first-child{
 	    		flex: 0 0 203px;
 	    		border-right: 1px solid @grey;
   		    padding-left: 16px;
 
-	    	}
-	    	&:last-child{
-					flex: 1 1 auto;
-					text-align: center;
-					margin-right: 16px;
-	    	}
+	    	// }
+	    // 	&:last-child{
+					// flex: 1 1 auto;
+					// text-align: center;
+					// margin-right: 16px;
+	    // 	}
 	    }
+
+	    .dropdown{
+				flex: 1 1 auto;
+				text-align: center;
+				margin-right: 16px;
+	    }
+
 		}
 		.content{
 			max-height: ~ "calc(100vh - 235px)";;
@@ -76,6 +83,22 @@
 							}
 						}
 					}
+
+					&.road{
+						&:hover{
+							.selector{
+								opacity: 1;
+							}
+						}
+					}
+
+					&.type{
+						&:hover{
+							.selector:not([road]){
+								opacity: 1;
+							}
+						}
+					}
 					
 					&.type{
 						margin-top: 10px;
@@ -84,12 +107,24 @@
 								>.check{
 									background-color: @linear_system_1;
 								}
+								.selector{
+									background-image: url('/img/GIPC-triangulo-calzada-1.svg');
+									&.active{
+										background-image: url('/img/GIPC-triangulo-calzada-2.svg');
+									}
+								}
 							}
 						}
 						&:nth-of-type(2){
 							&.active, .road.active{
 								>.check{
 									background-color: @linear_system_2
+								}
+								.selector{
+									background-image: url('/img/GIPC-triangulo-camino_santiago-1.svg');
+									&.active{
+										background-image: url('/img/GIPC-triangulo-camino_santiago-2.svg');
+									}
 								}
 							}
 						}
@@ -98,6 +133,12 @@
 								>.check{
 									background-color: @linear_system_3
 								}
+								.selector{
+									background-image: url('/img/GIPC-triangulo-ruta-plata-1.svg');
+									&.active{
+										background-image: url('/img/GIPC-triangulo-ruta-plata-2.svg');
+									}
+								}
 							}
 						}
 						&:nth-of-type(4){
@@ -105,12 +146,17 @@
 								>.check{
 									background-color: @linear_system_4;
 								}
+								.selector{
+									background-image: url('/img/GIPC-triangulo-via-pecuaria-1.svg');
+									&.active{
+										background-image: url('/img/GIPC-triangulo-via-pecuaria-2.svg');
+									}
+								}
 							}
 						}
 					}
 
 					.check{
-						content: '';
 						width: 12px;
 						height: 12px;
 						display: inline-block;
@@ -121,9 +167,23 @@
 						transition: opacity .1s linear;
 					}
 
+					.selector{
+						opacity: 0;
+						cursor: pointer;
+						width: 15px;
+						height: 15px;
+						float: right;
+						margin-top: 6px;
+						background-repeat: no-repeat;
+						background-position: center;
+						background-size: cover;
+						&.active{
+							opacity: 1;
+						}
+					}
+
 					span{
-						transition:opacity .1s linear;
-						opacity: .2;
+						opacity: 1;
 					}
 
 					img{
@@ -152,10 +212,59 @@
 								width: 10px;
 								height: 10px;
 							}
+							span{
+								display: inline-block;
+								max-width: 220px;
+								height: 19px;
+								transition:opacity .1s linear;
+								opacity: .2;
+								white-space: nowrap;
+								overflow: hidden;
+								text-overflow: ellipsis;
+							}
 						}
 					}
 				}
 			}
 		}
+	}
+}
+
+#linear_system_popup{
+	position: absolute;
+	top: 120px;
+	left: 50px;
+	padding: 18px 26px;
+	color:@black_light;
+	font-size: 20px;
+	opacity: 0;
+	transform: translateY(-20px);
+	pointer-events: none;
+	transition:opacity .25s, transform .25s;
+	&.yellow{
+		background-color: @yellow_intense;
+	}
+	&.red{
+		background-color: @red_intense;
+	}
+	&.blue{
+		background-color: @blue_intense;
+	}
+	&.green{
+		background-color: @green_intense;
+	}
+	&.active{
+		opacity: 1;
+		pointer-events: all;
+		transform: translateY(0);
+	}
+	h3{
+		font-weight: 600;
+		border-bottom: 2px solid @black_light;
+		padding-bottom: 18px;
+		margin-bottom: 16px;
+	}
+	h4{
+		font-weight: 300;
 	}
 }

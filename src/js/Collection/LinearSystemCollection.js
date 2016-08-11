@@ -14,7 +14,39 @@ module.exports = Backbone.Collection.extend({
   },
 
   parse: function(response) {
-    return response.rows;
-  }
+  	var response = response.rows;
+
+  	_.map(response, function(r){
+  		r.caminos = _.filter(r.caminos, function(c){ return c.camino != null;})
+  		return r;
+  	});
+
+
+    return response;
+  },
+
+  getSQL:function(){
+  	var sql = '';
+  	_.each(this.toJSON(),function(t){
+  		if(_.where(t.caminos,{'enable':true}).length >= 1 || (t.caminos.length == 0 && t.enable)){
+  			sql += '(tipo=\'' + t.tipo + '\' ';  
+
+  			if(_.where(t.caminos,{'enable':false}).length == 0){
+  				sql += ') or ';
+	  		}else{
+	  			sql += 'and ('
+	  			_.each(t.caminos,function(c,i) {
+	  				if(c.enable){
+	  					sql += 'subcategor=\'' + c.camino + '\' or '
+	  				}
+	  			});
+	  			sql = sql.slice(0,-3) + ')) or ';
+	  		}
+  		}
+  	});
+		
+		return sql.length == 0 ? false : sql.slice(0, -3);
+
+	}
 
 });

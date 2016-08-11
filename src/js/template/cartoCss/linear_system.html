@@ -1,0 +1,49 @@
+#sistemaslineales {
+   line-width: 2;
+}
+
+#sistemaslineales[tipo="Calzada Romana"] {
+  line-color: #ffb452;
+  line-opacity: <%=opacity%>;
+}
+#sistemaslineales[tipo="Camino Santiago"] {
+   line-color: #9e516b;
+   line-opacity: <%=opacity%>;
+}
+#sistemaslineales[tipo="Ruta de la Plata"] {
+   line-color: #71fff4;
+  line-opacity: <%=opacity%>;
+}
+#sistemaslineales[tipo="Vía Pecuaria"] {
+   line-color: #8cc63f;
+   line-opacity: <%=opacity%>;
+}
+
+<%if(type){%>
+	#sistemaslineales[tipo="<%=type%>"] {
+		
+		<%if(road){%>
+			[subcategor="<%=road%>"]{
+				line-opacity: 1;
+				line-width: 3;
+			}
+			<%}else{%>
+				line-opacity: 1;
+				line-width: 3;
+			<%}%>
+
+		[tipo="Calzada Romana"]{
+			line-color: #ffc571;
+		}
+		[tipo="Camino Santiago"]{
+			line-color: #d6516b;
+		}
+		[tipo="Ruta de la Plata"]{
+			line-color: #90fcf1;
+		}
+		[tipo="Vía Pecuaria"]{
+			line-color: #aedd64;
+		}
+
+	}
+<%}%>

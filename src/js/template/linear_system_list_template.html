@@ -4,8 +4,10 @@
 		<li class="type">
 			<div class="check"></div>
 			<span><%=t.tipo%></span>
-			<%if(!(t.caminos.length == 0 || t.caminos.length == 1 && t.caminos[0].camino==null)){%>
+			<%if(t.caminos.length > 0){%>
 				<img src="/img/GIPC-flecha-select.svg">
+			<%}else{%>
+				<div type="<%=t.tipo%>" class="selector"></div>
 			<%}%>
 			<ul>
 				<%_.each(t.caminos,function(c){%>
@@ -13,6 +15,7 @@
 						<li class="road">
 							<div class="check"></div>
 							<span><%=c.camino%></span>
+							<div road="<%=c.camino%>" type="<%=t.tipo%>" class="selector"></div>
 						</li>
 					<%}%>
 				<%})%>
