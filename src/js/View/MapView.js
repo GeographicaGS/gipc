@@ -89,7 +89,7 @@ module.exports = BaseView.extend({
     L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',{ attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>' })
     .addTo(this.map);
 
-    this.map.setView([40,-4.4167761], 7);
+    this.map.setView(config.coordinates, config.zoom);
 
     var _this = this;
     setTimeout(function(){
