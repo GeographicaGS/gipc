@@ -43,7 +43,8 @@ module.exports = BaseView.extend({
     'click li.type >.check': '_toggleType',
     'click .proximity li':'_changeProximity',
     'click ul li .selector': '_selectRoad',
-    'click #linear_system_popup .area a': '_toggleArea'
+    'click #linear_system_popup .area a': '_toggleArea',
+    'click #linear_system_popup .close': '_closePopup'
   },
 
   render: function () {
@@ -131,12 +132,35 @@ module.exports = BaseView.extend({
       }
     }else{
       var _this = this;
-      cartodb.createLayer(this.map, 'https://' + config.username +'.carto.com/api/v2/viz/5b21585e-5990-11e6-8026-0e3ff518bd15/viz.json', {'legends' : false})
+      cartodb.createLayer(this.map, 'https://' + config.username +'.carto.com/api/v2/viz/5b21585e-5990-11e6-8026-0e3ff518bd15/viz.json', {'legends' : false, 'infowindow':false})
       .addTo(this.map)
       .on('done', function(layer) {
+        layer.setInteractivity('cartodb_id,tipo,subcategor')
         layer.setZIndex(3);
         layer.setInteraction(true);
+        layer.getSubLayer(0).setInteraction(true);
         _this._layer = layer.getSubLayer(0).setSQL('SELECT * FROM sistemaslineales where ' + _this._collection.getSQL());
+        
+        layer.on('featureClick', function(e, latlng, pos, data) {
+          var type = data.tipo;
+          var road = data.subcategor;
+          _this._removeBuffer();
+          _this.$('ul li .selector').removeClass('active');
+          if(road)
+            _this.$('ul li .selector[type="' + type + '"][road="' + road + '"]').addClass('active');
+          else
+            _this.$('ul li .selector[type="' + type + '"]').addClass('active');
+          _this._roadDetail(type,road,false);
+        });
+
+        layer.on('mouseover', function(e, latlng, pos, data) {
+          $(_this.map._container).css('cursor', 'pointer');
+        });
+
+        layer.on('mouseout', function(e, latlng, pos, data) {
+          $(_this.map._container).css('cursor', 'auto');
+        });
+
       })
       .on('error', function(err) {
         console.log(err);
@@ -152,34 +176,38 @@ module.exports = BaseView.extend({
 
   _selectRoad:function(e){
     e.stopPropagation();
-    var _this = this;
     $('ul li .selector').not(e.currentTarget).removeClass('active');
-    
-    this.$('#linear_system_popup .area a').removeClass('active');
-    this.$('#linear_system_popup .area a:not([buffer])').addClass('active');
+    $(e.currentTarget).toggleClass('active');
     this._removeBuffer();
 
-    $(e.currentTarget).toggleClass('active');
-    var type = $(e.currentTarget).attr('type');
-    var road = $(e.currentTarget).attr('road');
     if($(e.currentTarget).hasClass('active')){
-      this._layer.setCartoCSS(this._template_carto_css({'opacity':'0.25', 'type':type, 'road':road}));
-      var model = new LinearSystemModel({'type':type, 'road':road});
-      model.fetch(
-        {
-          success: function(data){
-            _this.$('#linear_system_popup .type').text(type);
-            _this.$('#linear_system_popup .road').text(road);
-            _this.$('#linear_system_popup .longitude').text(Math.floor(parseFloat(data.get('longitud')) * 100) / 100 + ' Km');
-            _this.$('#linear_system_popup').removeClass();
-            _this.$('#linear_system_popup').addClass('active');
-            _this.$('#linear_system_popup').addClass(data.get('color'));
-            _this.map.fitBounds(L.latLngBounds(data.get('bbox')[1].reverse(), data.get('bbox')[3].reverse()));
-        }
-      });
+      var type = $(e.currentTarget).attr('type');
+      var road = $(e.currentTarget).attr('road');
+      this._roadDetail(type,road,true);
     }else{
       this._resetCartoCss();
     }
+  },
+
+  _roadDetail:function(type,road,fitBounds){
+    var _this = this;
+    this._layer.setCartoCSS(this._template_carto_css({'opacity':'0.25', 'type':type, 'road':road}));
+    var model = new LinearSystemModel({'type':type, 'road':road});
+    model.fetch(
+      {
+        success: function(data){
+          _this.$('#linear_system_popup .area a').removeClass('active');
+          _this.$('#linear_system_popup .area a:not([buffer])').addClass('active');
+          _this.$('#linear_system_popup .type').text(type);
+          _this.$('#linear_system_popup .road').text(road ?  road:null);
+          _this.$('#linear_system_popup .longitude').text(Math.floor(parseFloat(data.get('longitud')) * 100) / 100 + ' Km');
+          _this.$('#linear_system_popup').removeClass();
+          _this.$('#linear_system_popup').addClass('active');
+          _this.$('#linear_system_popup').addClass(data.get('color'));
+          if(fitBounds)
+            _this.map.fitBounds(L.latLngBounds(data.get('bbox')[1].reverse(), data.get('bbox')[3].reverse()));
+      }
+    });
   },
 
   _resetCartoCss:function(){
@@ -190,21 +218,28 @@ module.exports = BaseView.extend({
   _toggleArea:function(e){
     e.preventDefault();
     this.$('#linear_system_popup .area a').not(e.currentTarget).removeClass('active');
-    this.$(e.currentTarget).toggleClass('active');
+    this.$(e.currentTarget).addClass('active');
     var buffer = $(e.currentTarget).attr('buffer')
     var type = $('#linear_system_popup .type').text();
     var road = $('#linear_system_popup .road').text()
 
     this._removeBuffer(); 
     if(buffer == 'buffer_20'){
-      this._layer_buffer_20.getSubLayer(0).setSQL('SELECT * FROM buffer_20km WHERE tipo=\'' + type + '\'' + (road ? 'and subcategor=\'' + road + '\'':''));
+      this._layer_buffer_20.getSubLayer(0).setSQL('SELECT b.cartodb_id, b.the_geom, b.the_geom_webmercator, tipo FROM buffer_20km b INNER JOIN sistemaslineales s on s.cartodb_id = b.id_lineas WHERE tipo=\'' + type + '\'' + (road ? 'and subcategor=\'' + road + '\'':''));
       this._layer_buffer_20.addTo(this.map);
 
     }else if(buffer == 'buffer_40'){
-      this._layer_buffer_40.getSubLayer(0).setSQL('SELECT * FROM Buffer_40km WHERE tipo=\'' + type + '\'' + (road ? 'and subcategor=\'' + road + '\'':''));
+      this._layer_buffer_40.getSubLayer(0).setSQL('SELECT b.cartodb_id, b.the_geom, b.the_geom_webmercator, tipo FROM buffer_40km b INNER JOIN sistemaslineales s on s.cartodb_id = b.id_lineas WHERE tipo=\'' + type + '\'' + (road ? 'and subcategor=\'' + road + '\'':''));
       this._layer_buffer_40.addTo(this.map);
     }
 
+  },
+
+  _closePopup:function(){
+    this.$('#linear_system_popup').removeClass();
+    this.$('ul li .selector').removeClass('active');
+    this._removeBuffer();
+    this._resetCartoCss();
   },
 
   _removeBuffer:function(){

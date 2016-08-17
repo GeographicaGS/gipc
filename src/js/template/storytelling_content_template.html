@@ -1,0 +1,70 @@
+<%
+	var App = require('../App')
+%>
+
+<div class="gallery full_height" style="background-image: url('/img/gallery/<%=m.id%>.jpg')">
+	<img src="/img/GIPC-scroll.svg">
+</div>
+<div class="basic_info col_wrapper">
+	<div class="col">
+		<h1><%=m.nombre%></h1>
+		<div class="attributes">
+			<%_.each(filters,function(f){%>
+				<h6 class="filter <%=App.getClassByFilter(f.grupo)%>"><%=f.grupo%></h6>
+				<ul>
+					<%_.each(f.attributes,function(a){%>
+					<li><%=a.description%></li>
+					<%})%>
+				</ul>
+			<%})%>
+		</div>
+	</div>
+	<div class="col">
+		<h3><%=m.cat_ipce%></h3>
+		<h4><%=m.provincia%></h4>
+		<h5><%=m.local_punt%></h5>
+		<p><%=m.descripcio%></p>
+	</div>
+</div>
+<%if(m.url_visualizacion){%>
+	<div class="map">
+		<div class="video_wrapper">
+			<div class="video"></div>
+			<div class="close"></div>
+		</div>
+	</div>
+<%}%>
+<div class="section col_wrapper">
+	<div class="col">
+		<h3>Título de sección</h3>
+	</div>
+	<div class="col">
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi metus lectus, commodo vitae feugiat quis, ullamcorper ac ipsum. Praesent vel justo aliquam, tempor augue non, sodales enim. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam posuere metus ligula, vitae commodo ante commodo at. Phasellus convallis quam vel diam viverra, in ultrices lectus sodales. Praesent posuere massa id purus efficitur placerat. Mauris eu porta nisi. Cras vitae molestie leo. Maecenas at iaculis lorem, vel tempus tellus. Vivamus pharetra turpis euismod mauris bibendum faucibus. Nullam vehicula varius leo, a semper augue gravida ut. Duis et sagittis enim. Pellentesque convallis nisi vitae velit faucibus, a imperdiet diam sagittis
+		</p>
+	</div>
+</div>
+
+<%if(m.titulo_secuencia){%>
+	<div class="historical">
+		<h3><%=m.titulo_secuencia.split(" ").join("<br>")%></h3>
+		<div id="sec_vis"></div>
+		<ul class="secuence_list">
+			<%_.each(secuences, function(s,i) {%>
+	    	<li carto_id="<%=s.id%>" class="<%=i==0 ? 'active':''%>"><%=s.nombre_opcion%></li>  
+	    <%})%>
+		</ul>
+	</div>
+<%}%>
+
+<div class="section col_wrapper">
+	<div class="col">
+		<h3>Bibliografía</h3>
+	</div>
+	<div class="col">
+		<p><%=m.bibliograf%></p>
+	</div>
+</div>
+
+<div class="back">
+	<a jslink href="/">Volver al mapa</a>
+</div>

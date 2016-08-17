@@ -15,8 +15,10 @@ var config = require('../Config.js'),
 module.exports = BaseView.extend({
 	
 	_template_info_window_landScape: require('../template/infoWindowLandScape_template.html'),
+  _torque_cartocss: require('../template/cartoCss/torque_cartocss.html'),
 
   initialize: function(options) {
+    $('body').addClass('notScroll');
   	this._introView = new IntroView();
   	this._categories = new CategoryCollection([
   		{
@@ -52,24 +54,25 @@ module.exports = BaseView.extend({
     'click #attributes .content li, #attributes .all': '_filterLandscapes'
   },
 
-  onClose: function(){
+  remove: function(){
+    $('body').removeClass('notScroll');
+    Backbone.View.prototype.remove.call(this);
 
   	if(this._introView)
-  		this._introView.close();
+  		this._introView.remove();
 
     if(this._categoryView)
-      this._categoryView.close();
+      this._categoryView.remove();
 
     if(this._attributeView)
-      this._attributeView.close();
+      this._attributeView.remove();
 
     if(this._tabView)
-      this._tabView.close();
+      this._tabView.remove();
 
     if(this._territorialView)
-      this._territorialView.close();
+      this._territorialView.remove();
 
-    this.stopListening();
   },
 
   render: function () {
@@ -145,7 +148,7 @@ module.exports = BaseView.extend({
       layer.setZIndex(999);
       _this.landscapeLayer = layer
 
-      _this.infowindow = cartodb.vis.Vis.addInfowindow(_this.map, layer.getSubLayer(0), ['cartodb_id', 'nombre', 'provincia','cat_color'],{
+      _this.infowindow = cartodb.vis.Vis.addInfowindow(_this.map, layer.getSubLayer(0), ['cartodb_id', 'nombre', 'provincia','cat_color','modo_narrativo'],{
         infowindowTemplate: _this._template_info_window_landScape(),
       });
 
@@ -154,8 +157,13 @@ module.exports = BaseView.extend({
       });
 
       $('.cartodb-infowindow').on('click', '#info_landScape .interactive', function(){
-        _this._tabView.renderTab();
-        _this.infowindow.model.set('visibility', false);
+        if($(this).find('.navigate').length > 0){
+          var App = this.App = require('../App');
+          App.router.navigate($(this).find('.navigate').attr('href'),{trigger: true})
+        }else{
+          _this._tabView.renderTab();
+          _this.infowindow.model.set('visibility', false);
+        }
       });
 
     })
@@ -163,14 +171,35 @@ module.exports = BaseView.extend({
       console.log(err);
     });
 
+    cartodb.createLayer(this.map, {
+        type: "torque",
+        options: {
+          query: "SELECT (CASE WHEN cat_ipce='Paisajes Agricolas, Ganaderos y Forestales' THEN 1 WHEN cat_ipce='Paisajes Industriales' THEN 2 WHEN cat_ipce='Paisajes Simbolicos' THEN 3 WHEN cat_ipce='Paisajes Urbanos, Historicos y Defensivos' THEN 4 END) as cat_ipce_v, the_geom_webmercator, cartodb_id,generate_series(1,26,1) as t FROM table_100_paisajes_culturales where modo_narrativo is not null",
+          user_name: config.username,
+          tile_style: this._torque_cartocss()
+          }
+      },{time_slider: false}).addTo(this.map)
+      .done(function(layer) {
+        layer.setZIndex(998);
+        _this.torqueLayer = layer
+      }).
+      on('error', function(err) {
+        console.log(err);
+      });
+
   },
 
   _filterLandscapes:function(){
     var sql = 'SELECT * FROM table_100_paisajes_culturales where ' + this._categories.getSQL();
-    if(this._attributes.toJSON().length > 0)
+    var sql_torque = "SELECT (CASE WHEN cat_ipce='Paisajes Agricolas, Ganaderos y Forestales' THEN 1 WHEN cat_ipce='Paisajes Industriales' THEN 2 WHEN cat_ipce='Paisajes Simbolicos' THEN 3 WHEN cat_ipce='Paisajes Urbanos, Historicos y Defensivos' THEN 4 END) as cat_ipce_v, the_geom_webmercator, cartodb_id,generate_series(1,26,1) as t FROM table_100_paisajes_culturales where modo_narrativo is not null AND " + this._categories.getSQL();
+    if(this._attributes.toJSON().length > 0){
       sql += ' AND ' + this._attributes.getSQL();
+      sql_torque += ' AND ' + this._attributes.getSQL();
+    }
 
     this.landscapeLayer.getSubLayer(0).setSQL(sql);
+    this.torqueLayer.setSQL(sql_torque);
+    this.torqueLayer.setStep(1);
   },
 
   _mapbuttonClicked:function(e){

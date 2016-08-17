@@ -2,8 +2,8 @@
 
 var $ = require('jquery'),
 		Backbone = require('backbone'),
-		App = require('./App'),
-		MapView = require('./View/MapView') 
+		MapView = require('./View/MapView'),
+    StorytellingView = require('./View/StorytellingView')
 		;
 
 
@@ -13,6 +13,7 @@ module.exports = Backbone.Router.extend({
 
     routes: {
         "": "home",
+        "storytelling/:id": "storytelling",
     },
 
     initialize: function(options) {
@@ -21,5 +22,9 @@ module.exports = Backbone.Router.extend({
 
     home: function () {
      this._App.showView(new MapView().render());
+    },
+
+    storytelling:function(id){
+      this._App.showView(new StorytellingView({'id':id}).render());
     }
 });

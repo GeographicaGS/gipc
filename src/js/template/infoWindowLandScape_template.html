@@ -1,12 +1,15 @@
 <div id="info_landScape" class="{{cat_color}}">
 	<a href="#close" class="cartodb-popup-close-button close"></a>
 	<div class="interactive">
-		<div class="image" style="background-image: url('/img/gallery/{{cartodb_id}}.jpg');"></div>
+		<div class="image" style="background-image: url('/img/gallery/thumbnail/{{cartodb_id}}.jpg');"></div>
 		<div class="info">
 			<h3>{{nombre}}</h3>
 			<div class="separator"></div>
 			<h3>{{provincia}}</h3>
 			<img src="/img/GIPC-flecha-2.svg">
 		</div>
+		{{#modo_narrativo}}
+			<a class="navigate hide" href="{{modo_narrativo}}/{{cartodb_id}}">
+		{{/modo_narrativo}}
 	</div>
 </div>
