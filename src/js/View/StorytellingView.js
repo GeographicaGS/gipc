@@ -159,8 +159,9 @@ module.exports = BaseView.extend({
       this.$('#sec_vis').removeClass('image')
       setTimeout(function(){
         _this.$('#sec_vis').children().remove()
-        cartodb.createVis(_this.$('#sec_vis')[0], 'http://gipc-admin.carto.com/api/v2/viz/' + model.get('url_secuencia') + '/viz.json', {'legends' : true, 'search':false, 'zoomControl':false, 'shareable':false, 'infowindow':true, 'scrollWheelZoom':false})
+        cartodb.createVis(_this.$('#sec_vis')[0], 'http://gipc-admin.carto.com/api/v2/viz/' + model.get('url_secuencia') + '/viz.json', {'legends' : true, 'search':false, 'zoomControl':true, 'shareable':false, 'infowindow':true, 'scrollWheelZoom':true})
         .done(function(vis, layers) {
+          _this.$('#sec_vis .cartodb-zoom').remove();
           new L.Control.Zoom({ position: 'bottomleft' }).addTo(vis.getNativeMap());
           _this.$('#sec_vis').removeClass('mask');
          }).on('error', function(err) {
