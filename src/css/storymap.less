@@ -1,0 +1,219 @@
+#storymap{
+	&.active{
+		flex: 1 1 100%;
+		display: flex;
+		flex-direction: column;
+		.header{
+			position: absolute;	
+	    z-index: 99999;
+		}
+
+		.content{
+			&.yellow{
+				.map_title{
+					h2{
+						&:after{
+							background-color: @yellow;
+						}
+					}
+				}
+			}
+			&.blue{
+				.map_title{
+					h2{
+						&:after{
+							background-color: @blue;
+						}
+					}
+				}
+			}
+			&.green{
+				.map_title{
+					h2{
+						&:after{
+							background-color: @green;
+						}
+					}
+				}
+			}
+			&.red{
+				.map_title{
+					h2{
+						&:after{
+							background-color: @red;
+						}
+					}
+				}
+			}
+		}
+		.intro, .media{
+			position: fixed;
+			top: 0;
+			width: 100%;
+			height: ~ "calc(100% - 35px)" ;
+    	background-color: rgba(0,0,0,.5);
+		}
+
+		.intro{
+			z-index: 9999;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+
+			&.inactive{
+				transition:opacity .25s linear;
+				opacity: 0;
+				pointer-events: none;
+			}
+			
+			.go_left, .go_right{
+				opacity: 0;
+			}
+			.go_left{
+		    transform: translateX(-200%);
+			}
+			.go_right{
+		    transform: translateX(200%);
+			}
+
+			.wrapper{
+				display: flex;
+				position: relative;
+			}
+			
+			.title,.description{
+				max-width: 500px;
+				transition:transform .25s linear, opacity .25s linear;
+			}
+			.title{
+				text-align: center;
+				h1{
+					font-size: 60px;
+					line-height: 60px;
+					font-weight: 600;
+					border-bottom: 1px solid;
+					margin-bottom: 28px;
+					padding-bottom: 28px;
+				}
+				h2,h3{
+					font-size: 30px;
+					font-weight: 300;
+				}
+				button{
+					margin-top: 40px;
+				}
+			}
+			.description{
+				position: absolute;
+    		top: 0;
+    		left: 0;
+				h4{
+					text-align: center;
+					font-size: 30px;
+					line-height: 30px;
+					font-weight: 600;
+					border-bottom: 1px solid;
+					padding-bottom: 30px;
+					margin-bottom: 40px;
+				}
+				p{
+					color:@storytelling_grey;
+					font-size: 24px;
+					line-height: 30px;
+					font-weight: 400;
+				}
+				.buttons{
+					display: flex;
+					justify-content: center;
+					margin-top: 38px;
+					.back{
+						margin-right: 20px;
+					}
+				}
+			}
+			.next,.back{
+				width: 40px;
+				height: 40px;
+				background: none;
+				background-size: cover;
+				background-position: center;
+			}
+			.next{
+				background-image: url('/img/GIPC-flecha-derecha.svg');
+			}
+			.back{
+				background-image: url('/img/GIPC-flecha-izquierda.svg');
+			}
+		}
+		.map_content{
+			
+			&.active{
+				.map_title,.info_button{
+					opacity: 1;
+				}
+			}
+			.map_title,.info_button{
+				position: absolute;
+				z-index: 1;
+				opacity: 0;
+	    	transition:opacity .25s linear, background-image .2s linear;
+			}
+			.map_title{
+				max-width: 320px;
+				top: 176px;
+				left: 50px;
+				h2{
+					font-size: 60px;
+					line-height: 60px;
+					font-weight: bold;
+					&:after{
+						content: '';
+						display: block;
+						width: 76px;
+						height: 2px;
+						margin: 30px 0;
+					}
+				}
+				span{
+					display: block;
+					color:@grey;
+					font-size: 20px;
+				}
+			}
+			.info_button{
+				left: 154px;
+		    bottom: 95px;
+		    z-index: 2;
+			}
+		}
+
+		.media{
+	    z-index: 99999;
+			opacity: 0;
+			pointer-events: none;
+			transition:opacity .25s linear;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			&.active{
+				pointer-events: all;
+				opacity: 1;
+			}
+			.video{
+				width: 70%;
+				height: 70%;
+				position: relative;
+				.close{
+					position: absolute;
+					right: -20px;
+					top: -20px;
+				}
+			}
+		}
+
+		.map{
+	    flex: 1 1 100%;
+	  }
+	}
+}

@@ -1,0 +1,207 @@
+#storyline{
+	&.full_video{
+		.map{
+			pointer-events: none;
+			opacity: 0;
+		}
+		.header{
+			background-color: rgba(0, 0, 0, .5);
+			.show_video{
+				&.active{
+					display: none;
+				}
+			}
+			.show_info{
+				display: initial;
+			}
+		}
+		.content{
+			opacity: 0;
+		}
+	}
+
+	.header{
+		position: absolute;
+		z-index: 1;
+		>div{
+			flex: 1 1 100%;
+			text-align: right;
+			.show_video,.show_info{
+				display: none;
+				&:before{
+					content: '';
+					display: inline-block;
+					width: 30px;
+					height: 30px;
+					background-size:  cover;
+          top: 8px;
+				}
+			}
+			.show_video{
+				&.active{
+					display: initial;
+				}
+				&:before{
+					background-image: url(/img/GIPC-fullscreen.svg);
+				}
+			}
+			.show_info{
+				&:before{
+					background-image: url(/img/GIPC-ver informacion.svg);
+				}
+			}
+		}
+	}
+	
+	&.active{
+		flex: 1 1 100%;
+		display: flex;
+		flex-direction: column;
+		.content{
+			transition: opacity .25s linear;
+			&.yellow{
+				h1,h2,h3{
+					color: @yellow;
+				}
+				.title{
+					h1{
+						border-color: @yellow;
+					}
+				}
+				.description{
+					&:before{
+						background-color: @yellow;
+					}
+				}
+			}
+			&.blue{
+				h1,h2,h3{
+					color: @blue;
+				}
+				.title{
+					h1{
+						border-color: @blue;
+					}
+				}
+				.description{
+					&:before{
+						background-color: @blue;
+					}
+				}
+			}
+			&.green{
+				h1,h2,h3{
+					color: @green;
+				}
+				.title{
+					h1{
+						border-color: @green;
+					}
+				}
+				.description{
+					&:before{
+						background-color: @green;
+					}
+				}
+			}
+			&.red{
+				h1,h2,h3{
+					color: @red;
+				}
+				.title{
+					h1{
+						border-color: @red;
+					}
+				}
+				.description{
+					&:before{
+						background-color: @red;
+					}
+				}
+			}
+			.title,.description,.info_button{
+				position: absolute;
+				z-index: 1;
+			}
+			.title{
+				max-width: 488px;
+				top: 176px;
+				left: 50px;
+				h1{
+					font-size: 60px;
+					font-weight: 600;
+					line-height: 60px;
+					border-bottom: 1px solid;
+					padding-bottom: 26px;
+				}
+				h2, h3{
+					font-size: 30px;
+					font-weight: 300;
+				}
+				h2{
+					margin-top: 26px;
+					text-transform: uppercase;
+				}
+			}
+			.description{
+				max-width: 550px;
+				font-size: 20px;
+				right: 50px;
+				bottom: 102px;
+				font-weight: 400;
+				&:before{
+					content: '';
+					display: block;
+					width: 75px;
+					height: 2px;
+					margin-bottom: 18px;
+				}
+				p{
+					line-height: 30px;
+					color:@storytelling_grey;
+				}
+				span{
+					display: block;
+					color:@grey;
+					margin-top: 20px;
+					&:before{
+						content: '';
+						display: inline-block;
+						width: 40px;
+						height: 40px;
+						background-image: url('/img/GIPC-flecha-derecha.svg');
+						background-size: cover;
+						position: relative;
+						top:12px;
+						margin-right: 18px;
+					}
+				}
+			}
+			.info_button{
+				z-index: 2;
+				left: 154px;
+		    bottom: 95px;
+			}
+		}
+		.map{
+	    flex: 1 1 100%;
+	    position: relative;
+	    background: none;
+	    transition: opacity .25s linear;
+	    &:before{
+	    	content: '';
+	    	position: absolute;
+	    	width: 100%;
+	    	height: 100%;
+				background-color: rgba(0, 0, 0, .5);
+	    }
+		}
+		.media{
+			position: absolute;
+			width: 100%;
+			height: ~ "calc(100% - 35px)" ;
+      background-size: cover;
+      background-position: center;
+		}
+	}
+}

@@ -49,21 +49,8 @@ module.exports = BaseView.extend({
     var _this = this;
     this.$('.loading').remove();
     this.$('.content').addClass(this._model.get('cat_color'));
-    var filters = [];
-    _.each(this._attributes.toJSON(), function(f) {
-      var attributes = 
-      _.filter(
-        _.map(f.attributes, function(a){ 
-          if(_this._model.get(a.name_column))
-            return a;
-          else
-            return null
-        }),
-      function(obj){ return obj != null });
-      if(attributes.length > 0)
-        filters.push({'grupo':f.grupo, 'attributes':attributes})
-    });
-    this.$('.content').html(this._template_content({'m':this._model.toJSON(), 'filters':filters, 'secuences':this._secuences.toJSON()}));
+    
+    this.$('.content').html(this._template_content({'m':this._model.toJSON(), 'filters':this._model.generateFilters(), 'secuences':this._secuences.toJSON()}));
 
     var _this = this;
 

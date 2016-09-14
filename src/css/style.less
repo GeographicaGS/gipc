@@ -267,6 +267,117 @@ body{
     }
   }
 
+  #storytelling, #storyline, #storymap{
+    .header, .back{
+      height: 112px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      a{
+        font-size: 20px;
+        color:@grey;
+        font-weight: 400;
+        position: relative;
+        &:before{
+          content: url('/img/GIPC-flecha.svg');
+          display: inline-block;
+          margin-right: 18px;
+          position: relative;
+          top: 3px;
+          // position: absolute;
+          // left: -48px;
+          // top: -8px;
+          transform: rotate(180deg);
+        }
+      }
+    }
+    .header{
+      img{
+        margin-left: 50px;
+      }
+      a{
+        margin-left: auto;
+        margin-right: 50px;
+      }
+    }
+    .content{
+      &.yellow{
+        h1,h2,h3,h4,h5{
+          color:@yellow;
+        }
+        .close{
+          background-color: @yellow;
+        }
+      }
+      &.green{
+        h1,h2,h3,h4,h5{
+          color:@green;
+        }
+        .close{
+          background-color: @green;
+        }
+      }
+      &.red{
+        h1,h2,h3,h4,h5{
+          color:@red;
+        }
+        .close{
+          background-color: @red;
+        }
+      }
+      &.blue{
+        h1,h2,h3,h4,h5{
+          color:@blue;
+        }
+        .close{
+          background-color: @blue;
+        }
+      }
+    }
+  }
+
+  #storyline, #storymap{
+    .leaflet-bottom.leaflet-left{
+      left: 74px;
+    }
+  }
+
+  .close{
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background-image: url('/img/GIPC-cerrar.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 40px;
+  }
+
+  .break_word{
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    white-space: pre-line;
+  }
+
+  .info_button{
+    background:none;
+    background-image: url('/img/GIPC-informacion.svg');
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    transition: background-image .2s linear;
+    &.active{
+      background-image: url('/img/GIPC-informacion-2.svg');
+    }
+  }
+
   footer{
   	// flex: 0 0 35px;
   	// background-color: @black_light;
@@ -285,4 +396,7 @@ body{
 @import "src/css/territorial.less";
 @import "src/css/natural_spaces.less";
 @import "src/css/linear_system.less";
+@import "src/css/storyInfoPanel.less";
 @import "src/css/storytelling.less";
+@import "src/css/storyline.less";
+@import "src/css/storymap.less";

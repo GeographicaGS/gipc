@@ -19,6 +19,26 @@ module.exports = Backbone.Model.extend({
 
   parse: function(response) {
     return response.rows[0];
+  },
+
+  generateFilters:function(){
+    var filters = [];
+    var _this = this;
+    _.each(this._attributesCollection.toJSON(), function(f) {
+      var attributes = 
+      _.filter(
+        _.map(f.attributes, function(a){ 
+          if(_this.get(a.name_column))
+            return a;
+          else
+            return null
+        }),
+      function(obj){ return obj != null });
+      if(attributes.length > 0)
+        filters.push({'grupo':f.grupo, 'attributes':attributes})
+    });
+
+    return filters;
   }
 
 });

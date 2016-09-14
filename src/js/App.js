@@ -52,3 +52,14 @@ var App = module.exports = {
 
 
 App.ini();
+
+$('body').on('click','a',function(e){
+  var attr = $(this).attr('jslink'),
+      href = $(this).attr('href');
+
+  if (attr!= undefined && attr!='undefined'){
+    e.preventDefault();
+    App.router.navigate(href,{trigger: true});
+  }
+  
+});

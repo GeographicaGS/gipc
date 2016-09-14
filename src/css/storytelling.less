@@ -1,32 +1,6 @@
 #storytelling{
 	.header, .back{
-		height: 112px;
-		width: 100%;
 		background-color: @black_light;
-		display: flex;
-		align-items: center;
-		a{
-			font-size: 20px;
-			color:@grey;
-			font-weight: 400;
-			position: relative;
-			&:before{
-				content: url('/img/GIPC-flecha.svg');
-				position: absolute;
-				left: -48px;
-				top: -8px;
-				transform: rotate(180deg);
-			}
-		}
-	}
-	.header{
-		img{
-			margin-left: 50px;
-		}
-		a{
-			margin-left: auto;
-			margin-right: 50px;
-		}
 	}
 	.back{
 		margin-top: 100px;
@@ -44,9 +18,6 @@
 			font-weight: 300;
 		}
 		&.yellow{
-				h1,h2,h3,h4,h5{
-					color:@yellow;
-				}	
 				.section{
 					.col{
 						p{
@@ -67,14 +38,8 @@
 						}
 					}
 				}
-				.close{
-					background-color: @yellow;
-				}
 			}
 			&.green{
-				h1,h2,h3,h4,h5{
-					color:@green;
-				}
 				.section{
 					.col{
 						p{
@@ -95,14 +60,8 @@
 						}
 					}
 				}
-				.close{
-					background-color: @green;
-				}
 			}
 			&.red{
-				h1,h2,h3,h4,h5{
-					color:@red;
-				}	
 				.section{
 					.col{
 						p{
@@ -123,14 +82,8 @@
 						}
 					}
 				}
-				.close{
-					background-color: @red;
-				}
 			}
 			&.blue{
-				h1,h2,h3,h4,h5{
-					color:@blue;
-				}
 				.section{
 					.col{
 						p{
@@ -150,9 +103,6 @@
 							border-color: transparent @blue transparent transparent;
 						}
 					}
-				}
-				.close{
-					background-color: @blue;
 				}
 			}
 		.gallery{
@@ -268,14 +218,6 @@
 					height: 600px;
 				}
 				.close{
-					cursor: pointer;
-					width: 40px;
-					height: 40px;
-					border-radius: 100%;
-					background-image: url('/img/GIPC-cerrar.svg');
-					background-repeat: no-repeat;
-					background-position: center;
-					background-size: 40px;
 					position: absolute;
 					top: 20px;
 					right: 20px;
@@ -321,7 +263,7 @@
 			h3{
 				font-size: 50px;
 				line-height: 54px;
-				color:@black;
+				color:@black !important;
 				font-weight: bold;
 				// width: 290px;
 				padding:30px;
