@@ -19,7 +19,8 @@ module.exports = BaseView.extend({
 
   initialize: function(options) {
     $('body').addClass('notScroll');
-  	this._introView = new IntroView();
+    if(options.intro)
+  	 this._introView = new IntroView();
   	this._categories = new CategoryCollection([
   		{
   			'title':'Paisajes Agricolas, Ganaderos y Forestales',
@@ -77,7 +78,12 @@ module.exports = BaseView.extend({
 
   render: function () {
   	this.$el.html('<div id="map"></div>');
-  	this.$el.append(this._introView.render().$el);
+    
+    // if(this._introView)
+  	 // this.$el.append(this._introView.render().$el);
+    // else
+    //   this._loadLandscapes();
+
     this.$el.append(this._categoryView.render().$el);
     this.$el.append(this._attributeView.render().$el);
     this.$el.append(this._tabView.render().$el);
@@ -108,6 +114,11 @@ module.exports = BaseView.extend({
 
     this._linearSystemView = new LinearSystemView({'map':this.map});
     this.$el.append(this._linearSystemView.render().$el);
+
+    if(this._introView)
+     this.$el.append(this._introView.render().$el);
+    else
+      this._loadLandscapes();
 	
   	return this;
   },
@@ -166,40 +177,90 @@ module.exports = BaseView.extend({
         }
       });
 
+      var sql_torque = 'SELECT cat_color, ST_AsGeoJSON(the_geom) as geom FROM table_100_paisajes_culturales where modo_narrativo is not null'
+      _this._loadTorque(sql_torque);
+
     })
     .on('error', function(err) {
       console.log(err);
     });
 
-    cartodb.createLayer(this.map, {
-        type: "torque",
-        options: {
-          query: "SELECT (CASE WHEN cat_ipce='Paisajes Agricolas, Ganaderos y Forestales' THEN 1 WHEN cat_ipce='Paisajes Industriales' THEN 2 WHEN cat_ipce='Paisajes Simbolicos' THEN 3 WHEN cat_ipce='Paisajes Urbanos, Historicos y Defensivos' THEN 4 END) as cat_ipce_v, the_geom_webmercator, cartodb_id,generate_series(1,26,1) as t FROM table_100_paisajes_culturales where modo_narrativo is not null",
-          user_name: config.username,
-          tile_style: this._torque_cartocss()
-          }
-      },{time_slider: false}).addTo(this.map)
-      .done(function(layer) {
-        layer.setZIndex(998);
-        _this.torqueLayer = layer
-      }).
-      on('error', function(err) {
-        console.log(err);
-      });
+    // cartodb.createLayer(this.map, {
+    //     type: "torque",
+    //     options: {
+    //       query: "SELECT (CASE WHEN cat_ipce='Paisajes Agricolas, Ganaderos y Forestales' THEN 1 WHEN cat_ipce='Paisajes Industriales' THEN 2 WHEN cat_ipce='Paisajes Simbolicos' THEN 3 WHEN cat_ipce='Paisajes Urbanos, Historicos y Defensivos' THEN 4 END) as cat_ipce_v, the_geom_webmercator, cartodb_id,generate_series(1,26,1) as t FROM table_100_paisajes_culturales where modo_narrativo is not null",
+    //       user_name: config.username,
+    //       tile_style: this._torque_cartocss()
+    //       }
+    //   },{time_slider: false}).addTo(this.map)
+    //   .done(function(layer) {
+    //     layer.setZIndex(998);
+    //     _this.torqueLayer = layer
+    //   }).
+    //   on('error', function(err) {
+    //     console.log(err);
+    //   });
 
+  },
+
+  _loadTorque:function(sql){
+    var _this = this;
+    var outstanding = new Backbone.Model()
+    outstanding.url = 'https://' + config.username + '.carto.com/api/v2/sql?q=' + sql;
+    outstanding.fetch({
+      success: function(data){
+        var geoms = [];
+        data = data.toJSON().rows;
+        for(var i=0; i<data.length; i++){
+          geoms.push({
+            'type': 'Feature',
+            'properties': {'color': data[i].cat_color},
+            "geometry": JSON.parse(data[i].geom)
+          });
+        }
+
+
+        var geojsonMarkerOptions = {
+            radius: 1.2,
+            weight: 0,
+            fillOpacity: 0,
+            className:'outstanding_map',
+            clickable:false
+        };
+
+        _this.torqueLayer = L.geoJson(geoms,{
+          pointToLayer: function (feature, latlng) {
+            if(feature.properties.color == 'red')
+              geojsonMarkerOptions.color = '#ff4800';
+            else if(feature.properties.color == 'blue')
+              geojsonMarkerOptions.color = '#0a9bcd';
+            else if(feature.properties.color == 'green')
+              geojsonMarkerOptions.color = '#23a880';
+            else if(feature.properties.color == 'yellow')
+              geojsonMarkerOptions.color = '#c4ae4e';
+
+              return L.circleMarker(latlng, geojsonMarkerOptions);
+          }
+        }).addTo(_this.map);
+      }
+    });
   },
 
   _filterLandscapes:function(){
     var sql = 'SELECT * FROM table_100_paisajes_culturales where ' + this._categories.getSQL();
-    var sql_torque = "SELECT (CASE WHEN cat_ipce='Paisajes Agricolas, Ganaderos y Forestales' THEN 1 WHEN cat_ipce='Paisajes Industriales' THEN 2 WHEN cat_ipce='Paisajes Simbolicos' THEN 3 WHEN cat_ipce='Paisajes Urbanos, Historicos y Defensivos' THEN 4 END) as cat_ipce_v, the_geom_webmercator, cartodb_id,generate_series(1,26,1) as t FROM table_100_paisajes_culturales where modo_narrativo is not null AND " + this._categories.getSQL();
+    var sql_torque = 'SELECT cat_color, ST_AsGeoJSON(the_geom) as geom FROM table_100_paisajes_culturales where modo_narrativo is not null and ' + this._categories.getSQL()
+    // var sql_torque = "SELECT (CASE WHEN cat_ipce='Paisajes Agricolas, Ganaderos y Forestales' THEN 1 WHEN cat_ipce='Paisajes Industriales' THEN 2 WHEN cat_ipce='Paisajes Simbolicos' THEN 3 WHEN cat_ipce='Paisajes Urbanos, Historicos y Defensivos' THEN 4 END) as cat_ipce_v, the_geom_webmercator, cartodb_id,generate_series(1,26,1) as t FROM table_100_paisajes_culturales where modo_narrativo is not null AND " + this._categories.getSQL();
     if(this._attributes.toJSON().length > 0){
       sql += ' AND ' + this._attributes.getSQL();
       sql_torque += ' AND ' + this._attributes.getSQL();
     }
 
     this.landscapeLayer.getSubLayer(0).setSQL(sql);
-    this.torqueLayer.setSQL(sql_torque);
-    this.torqueLayer.setStep(1);
+    this.map.removeLayer(this.torqueLayer);
+    this._loadTorque(sql_torque);
+    // this.torqueLayer.clearLayers();
+    // this.torqueLayer.setSQL(sql_torque);
+    // this.torqueLayer.setStep(1);
   },
 
   _mapbuttonClicked:function(e){

@@ -91,7 +91,7 @@ module.exports = BaseView.extend({
   	model = this._collection.get(id);
   	model.set('enable', !model.get('enable'))
 
-  	this.$('svg #marcadores_interior circle').attr('fill','#1F252C')
+  	this.$('svg #marcadores_interior circle').attr('fill','#393f47')
   	this.$('svg #textos >g').attr('class','');
 
   	if(this.currentLayer)

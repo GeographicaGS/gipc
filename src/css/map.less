@@ -1,3 +1,13 @@
+@keyframes pulse {
+  from { stroke-width: 0; stroke-opacity: 0.8; }
+  to { stroke-width: 50; stroke-opacity: 0; }
+}
+
+.outstanding_map{
+  animation: pulse 1.5s linear;
+  animation-iteration-count: infinite;
+}
+
 #map{
 	flex: 1 1 100%;
 }

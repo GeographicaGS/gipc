@@ -15,17 +15,22 @@ module.exports = Backbone.Router.extend({
 
     routes: {
         "": "home",
+        "map": "map",
         "storytelling/:id": "storytelling",
         "storyline/:id": "storyline",
         "storymap/:id": "storymap",
     },
 
     initialize: function(options) {
-    	this._App = options.App
+    	this._App = options.App;
   	},
 
     home: function () {
-     this._App.showView(new MapView().render());
+     this._App.showView(new MapView({'intro':true}).render());
+    },
+
+    map: function () {
+     this._App.showView(new MapView({'intro':false}).render());
     },
 
     storytelling:function(id){
