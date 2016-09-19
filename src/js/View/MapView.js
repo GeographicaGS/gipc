@@ -46,16 +46,22 @@ module.exports = BaseView.extend({
     this._attributeView = new AttributeView({'collection':this._attributes});
 
     this._tabView = new TabView({'collection':this._attributes});
+    this._currentMap = 1;
+    this.App = require('../App');
   },
 
   events: {
-    'click #intro': '_loadLandscapes',
+    // 'click #intro': '_loadLandscapes',
+    'click #intro': '_showHtmlElements',
     'click #intro .choose': '_openfilters',
     'click .mapbutton': '_mapbuttonClicked',
-    'click #attributes .content li, #attributes .all': '_filterLandscapes'
+    'click #attributes .content li, #attributes .all': '_filterLandscapes',
+    'click .map_selector .peninsula': '_goToPeninsula',
+    'click .map_selector .canary': '_goToCanary'
   },
 
   remove: function(){
+    this.App.lastBound = this.map.getBounds();
     $('body').removeClass('notScroll');
     Backbone.View.prototype.remove.call(this);
 
@@ -77,7 +83,8 @@ module.exports = BaseView.extend({
   },
 
   render: function () {
-  	this.$el.html('<div id="map"></div>');
+    var _this = this;
+  	this.$el.html('<div id="map"><img class="logo" src="/img/GIPC-logo.svg"><div class="map_selector"><a class="peninsula" href="#"></a><a class="canary" href="#"></a></div></div>');
     
     // if(this._introView)
   	 // this.$el.append(this._introView.render().$el);
@@ -90,20 +97,40 @@ module.exports = BaseView.extend({
 
   	this.map = new L.Map(this.$('#map')[0], {
       zoomControl : false,
-      scrollWheelZoom: false
+      scrollWheelZoom: true
     });
 
     new L.Control.Zoom({ position: 'bottomleft' }).addTo(this.map);
 
-    L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',{ attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>' })
-    .addTo(this.map);
+    this._baseLayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',{ attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>' });
+    this._baseLayer.addTo(this.map);
+
+    // https://cartodb-basemaps-a.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png
+    // this._baseDark._url = 'https://4.maps.nlp.nokia.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/256/jpg?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24';
+    // this._baseDark.redraw();
 
     this.map.setView(config.coordinates, config.zoom);
 
-    var _this = this;
     setTimeout(function(){
        _this.map.invalidateSize();
+      if(_this.App.lastBound)
+        _this.map.fitBounds(_this.App.lastBound);
+      else
+        _this.map.fitBounds([[27.6378, -18.1612],[43.7924, 4.32778]]);
+
     },100);
+
+    this.map.on('zoomend', function() {
+      if(_this._currentMap == 1 && _this.map.getZoom() >= 14){
+        _this._currentMap = 2;
+        _this._baseLayer._url = 'https://1.maps.nlp.nokia.com/maptile/2.1/maptile/newest/hybrid.day/{z}/{x}/{y}/256/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24';
+        _this._baseLayer.redraw();
+      }else if(_this._currentMap == 2 && _this.map.getZoom() < 14){
+        _this._currentMap = 1;
+        _this._baseLayer._url = 'https://cartodb-basemaps-a.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
+        _this._baseLayer.redraw();
+      }
+    });
 
     this._territorialView = new TerritorialView({'map':this.map});
     this.$el.append(this._territorialView.render().$el);
@@ -115,18 +142,30 @@ module.exports = BaseView.extend({
     this._linearSystemView = new LinearSystemView({'map':this.map});
     this.$el.append(this._linearSystemView.render().$el);
 
-    if(this._introView)
+    if(this._introView){
      this.$el.append(this._introView.render().$el);
-    else
-      this._loadLandscapes();
+    }else{
+      this._showHtmlElements();
+    }
+
+   this._loadLandscapes();
+
+    // if(this._introView)
+    //  this.$el.append(this._introView.render().$el);
+    // else
+    //   this._loadLandscapes();
 	
   	return this;
   },
 
-  _loadLandscapes:function(){
-  	var _this = this;
+  _showHtmlElements:function(){
     this.$('#categories').addClass('active');
     this.$('.mapbutton').addClass('enable');
+    this.$('#map').addClass('active');
+  },
+
+  _loadLandscapes:function(){
+  	var _this = this;
 
   	// cartodb.createLayer(this.map, 'http://gipc-admin.carto.com/api/v2/viz/a629110e-598e-11e6-a374-0e3ff518bd15/viz.json', {'legends' : false})
    //  .addTo(this.map)
@@ -150,7 +189,7 @@ module.exports = BaseView.extend({
       type: 'cartodb',
       sublayers: [{
         sql: "SELECT * FROM table_100_paisajes_culturales",
-        cartocss: '#table_100_paisajes_culturales {   marker-fill-opacity: 1;   marker-line-color: #FFF;   marker-line-width: 0;   marker-line-opacity: 0.5;   marker-placement: point;   marker-type: ellipse;   marker-width: 10;   marker-allow-overlap: true;}#table_100_paisajes_culturales[cat_ipce="Paisajes Agricolas, Ganaderos y Forestales"] {   marker-fill: #23a880;}#table_100_paisajes_culturales[cat_ipce="Paisajes Industriales"] {   marker-fill: #c4ae4e;}#table_100_paisajes_culturales[cat_ipce="Paisajes Simbolicos"] {   marker-fill: #0a9bcd;}#table_100_paisajes_culturales[cat_ipce="Paisajes Urbanos, Historicos y Defensivos"] {   marker-fill: #ff4800;}',
+        cartocss: '#table_100_paisajes_culturales {   marker-fill-opacity: 1;   marker-line-color: #FFF;   marker-line-width: 0;   marker-line-opacity: 0.5;   marker-placement: point;   marker-type: ellipse;   marker-width: 10;   marker-allow-overlap: true;}#table_100_paisajes_culturales[zoom<=5]{marker-width: 6;}#table_100_paisajes_culturales[cat_ipce="Paisajes Agricolas, Ganaderos y Forestales"] {   marker-fill: #23a880;}#table_100_paisajes_culturales[cat_ipce="Paisajes Industriales"] {   marker-fill: #c4ae4e;}#table_100_paisajes_culturales[cat_ipce="Paisajes Simbolicos"] {   marker-fill: #0a9bcd;}#table_100_paisajes_culturales[cat_ipce="Paisajes Urbanos, Historicos y Defensivos"] {   marker-fill: #ff4800;}',
         interactivity: ['cartodb_id', 'nombre', 'provincia','cat_color']
       }]
     })
@@ -169,8 +208,8 @@ module.exports = BaseView.extend({
 
       $('.cartodb-infowindow').on('click', '#info_landScape .interactive', function(){
         if($(this).find('.navigate').length > 0){
-          var App = this.App = require('../App');
-          App.router.navigate($(this).find('.navigate').attr('href'),{trigger: true})
+          // var App = this.App = require('../App');
+          _this.App.router.navigate($(this).find('.navigate').attr('href'),{trigger: true})
         }else{
           _this._tabView.renderTab();
           _this.infowindow.model.set('visibility', false);
@@ -275,6 +314,14 @@ module.exports = BaseView.extend({
 
   _openfilters:function(){
     this.$('.mapbutton.attributes').trigger('click');
+  },
+
+  _goToPeninsula:function(e){
+    this.map.fitBounds(config.peninsula);
+  },
+
+  _goToCanary:function(e){
+    this.map.fitBounds(config.canary);
   }
 
 });

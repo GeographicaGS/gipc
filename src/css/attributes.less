@@ -33,8 +33,24 @@
 		background-color: @black;
 		display: flex;
 		align-items:center;
+    justify-content: space-between;
 		.all{
 			margin-left: 30px;
+		}
+		.info{
+			margin-right: 30px;
+			font-size: 12px;
+			&:before{
+				content: '?';
+				display: inline-block;
+				border-radius: 100%;
+				background-color: #a3b0b3;
+				color: @black;
+				position: relative;
+				bottom: 1px;
+				margin-right: 5px;
+    		padding: 0 4.3px;
+			}
 		}
 	}
 

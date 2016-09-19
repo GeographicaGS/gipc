@@ -95,9 +95,33 @@
   		background-color: @black_light;
   		margin: 10px 0;
   	}
-  	img{
-  		margin-top: 20px;
+  	img,span{
+  		margin-top: 18px;
   	}
+    span{
+      position: relative;
+      margin-left: 32px;
+      &:before{
+        position: absolute;
+        top: -4px;
+        left: -32px;
+      }
+      &.storytelling{
+        &:before{
+          content: url('/img/GIPC-historia-storytelling.svg');
+        }
+      }
+      &.storyline{
+        &:before{
+          content: url('/img/GIPC-historia-linea.svg');
+        }
+      }
+      &.storymap{
+        &:before{
+          content: url('/img/GIPC-historia-mapa.svg');
+        }
+      }
+    }
   }
   &:after{
   	content: '';

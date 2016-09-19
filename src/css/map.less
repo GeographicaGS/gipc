@@ -10,6 +10,53 @@
 
 #map{
 	flex: 1 1 100%;
+  .logo{
+    position: fixed;
+    z-index: 1;
+    left: 20px;
+    top: 20px;
+  }
+  .leaflet-control-attribution,.cartodb-logo,.leaflet-bottom.leaflet-left,.map_selector{
+    opacity: 0;
+    transition:opacity .25s linear;
+  }
+
+  &.active{
+    .leaflet-control-attribution,.cartodb-logo,.leaflet-bottom.leaflet-left,.map_selector{
+      opacity: 1;
+    }
+  }
+
+  .leaflet-bottom.leaflet-left{
+    bottom: -20px;
+  }
+  .cartodb-logo{
+    left: 90px !important;
+    bottom: 7px !important;
+  }
+  .map_selector{
+
+    position: absolute;
+    z-index: 1;
+    left: 20px;
+    bottom: 64px;
+    a{
+      display: block;
+      width: 24px;
+      height: 24px;
+      background-repeat: no-repeat;
+      background-size: 24px;
+    }
+    .peninsula{
+      background-image: url('/img/GIPC-vista-peninsula.png');
+      margin-bottom: 6px;
+      height: 34px;
+      border-bottom: 1px solid @black_light;
+    }
+    .canary{
+      background-image: url('/img/GIPC-vista-canarias.png');
+    }
+  }
 }
 
 input[type=button].mapbutton{
@@ -41,38 +88,52 @@ input[type=button].mapbutton{
 		&.active{
 	    background-image: url('/img/GIPC-boton-paisajes-2.svg');
 	  }
+    &.filter{
+      background-image: url('/img/GIPC-boton-paisajes-3.svg');
+      background-color: @grey;
+    }
 	}
 
   &.territorial, &.natural, &.linear_system{
-    right: 45px;
+    background-size: 32px;
+    width: 50px;
+    height: 50px;
+    top:22px;
+    transform: translateX(200px);
     &.enable{
       transform: translateY(0);
     }
   }
 
+  &.territorial, &.linear_system{
+    border-radius: 16px;
+  }    
+
   &.territorial{
-    bottom: 54px;
-    transform: translateY(140px);
+    top: 22px;
+    right: 35px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
     background-image: url('/img/GIPC-boton-territorial.svg');
     &.active{
-      transform: translateY(-115px);
       background-image: url('/img/GIPC-boton-territorial-2.svg');
     }
   }
 
-  &.natural, &.linear_system{
-    top:22px;
-  }
-
   &.natural{
+    right: 85px;
     background-image: url('/img/GIPC-boton-entorno.svg');
+    border-radius: 0;
+    border-left: 2px solid @black;
+    border-right: 2px solid @black;
     &.active{
       background-image: url('/img/GIPC-boton-entorno-2.svg');
     }
   }
 
   &.linear_system{
-    transform: translateX(calc(100% + 180px));
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
     right: 135px;
     background-image: url('/img/GIPC-boton-lineales.svg');
     &.active{

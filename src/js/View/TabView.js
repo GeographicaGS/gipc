@@ -86,16 +86,16 @@ module.exports = BaseView.extend({
 
     var map = new L.Map(this.$('.location_image')[0], {
       zoomControl : false,
-      doubleClickZoom:false,
-      dragging:false,
-      scrollWheelZoom:false
+      doubleClickZoom:true,
+      dragging:true,
+      scrollWheelZoom:true
     });
 
     L.tileLayer('https://1.maps.nlp.nokia.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/256/png8?lg=es&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24', {
     }).addTo(map);
 
 
-    map.setView(location, 18);
+    map.setView(location, 14);
 
     var color;
     if(this._model.get('cat_color') == 'yellow')
@@ -115,7 +115,7 @@ module.exports = BaseView.extend({
         color: color
     };
     
-    L.circleMarker(location, circleOptions).addTo(map);
+    // L.circleMarker(location, circleOptions).addTo(map);
 
   }
 

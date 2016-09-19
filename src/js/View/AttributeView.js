@@ -42,10 +42,13 @@ module.exports = BaseView.extend({
       if(attribute)
         attribute.enable = !attribute.enable;
     });
-    if(this.$('li').not('.active').length > 0)
-      this.$('.all').addClass('unselect')
-    else
-      this.$('.all').removeClass('unselect')
+    if(this.$('li').not('.active').length > 0){
+      this.$('.all').addClass('unselect');
+      this.$('.mapbutton').addClass('filter');
+    }else{
+      this.$('.all').removeClass('unselect');
+      this.$('.mapbutton').removeClass('filter');
+    }
   },
 
   _toggleAll:function(e){
@@ -56,6 +59,12 @@ module.exports = BaseView.extend({
         a.enable = enable;
       });
     });
+
+    if(enable)
+      this.$('.mapbutton').removeClass('filter');
+    else
+      this.$('.mapbutton').addClass('filter');
+
     this._drawAttributes();
   }
 

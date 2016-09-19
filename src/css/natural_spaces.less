@@ -1,24 +1,28 @@
 #natural_spaces{
 	position: absolute;
-	right: 45px;
-	top: 109px;
-  display: flex;
-
+	right: 35px;
+	top: 85px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
   transition:transform .2s linear, opacity .2s linear;
 	transform: translateX(45px);
   opacity: 0;
   pointer-events: none;
+  z-index: 1002;
   &.active{
-  	pointer-events: all;
+  	// pointer-events: all;
   	opacity: 1;
   	transform: translateX(0);
+  	.spaces{
+  		pointer-events: all;
+  	}
   }
 
 
 	h3{
 		font-size: 46px;
 		color:@grey;
-		margin-right: 20px;
 		font-weight: 600;
 		text-align: right;
 		.all{
@@ -26,6 +30,7 @@
 		}
 	}
 	.spaces{
+		pointer-events: none;
 		color:@grey_light;
 		width: 300px;
 		margin-top: 11px;

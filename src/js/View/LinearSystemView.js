@@ -70,7 +70,8 @@ module.exports = BaseView.extend({
       var active = $(e.currentTarget).hasClass('active') ? true:false;
       this._collection.findWhere({'tipo':type}).set('enable',active);
       if(active)
-        this.map.setView(config.coordinates, config.zoom);
+        // this.map.setView(config.coordinates, config.zoom);
+      this.map.fitBounds(config.peninsula);
       this._loadLayer();
     }
   },
@@ -117,7 +118,8 @@ module.exports = BaseView.extend({
     }
 
     if(active)
-      this.map.setView(config.coordinates, config.zoom);
+      this.map.fitBounds(config.peninsula);
+      // this.map.setView(config.coordinates, config.zoom);
 
     this._loadLayer();
   },

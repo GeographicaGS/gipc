@@ -6,7 +6,14 @@
 			<h3>{{nombre}}</h3>
 			<div class="separator"></div>
 			<h3>{{provincia}}</h3>
-			<img src="/img/GIPC-flecha-2.svg">
+
+			{{#modo_narrativo}}
+			  <span class="{{modo_narrativo}}">Ir a historia</span>
+			{{/modo_narrativo}}
+			{{^modo_narrativo}}
+			  <img src="/img/GIPC-flecha-2.svg">
+			{{/modo_narrativo}}
+
 		</div>
 		{{#modo_narrativo}}
 			<a class="navigate hide" href="{{modo_narrativo}}/{{cartodb_id}}">

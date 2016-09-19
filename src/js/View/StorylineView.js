@@ -61,7 +61,7 @@ module.exports = BaseView.extend({
 
     this.map = new L.Map(this.$('.map')[0], {
       zoomControl : false,
-      scrollWheelZoom: false,
+      scrollWheelZoom: true,
     });
 
     _this.map.fitBounds(L.latLngBounds(this._model.get('bbox')[1].reverse(), this._model.get('bbox')[3].reverse()));
