@@ -1,0 +1,18 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-12"></div>
+		<h1>Artículos</h1>
+		<%_.each(articles,function(a){%>
+			<div class="article">
+				<a jslink href="/article/<%=a.id%>">
+					<h3><%=a.titulo%></h3>
+					<p><%=a.extracto%></p>
+					<span class="author"><%=a.autor%></span>
+					<%if(a.paisaje_id){%>
+						<span class="land <%=a.cat_color%>">Artículo con paisaje relacionado</span>
+					<%}%>
+				</a>
+			</div>
+		<%})%>
+	</div>
+</div>

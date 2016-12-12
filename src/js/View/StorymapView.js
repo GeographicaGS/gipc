@@ -1,8 +1,10 @@
 "use strict";
 var StorylineView = require('./StorylineView'),
+    HeaderView = require('./HeaderView'),
     AttributeCollection = require('../Collection/AttributeCollection'),
     StoryMapModel = require('../Model/StoryMapModel'),
     StoryInfoPanelView = require('./StoryInfoPanelView'),
+    ArticleButtonView = require('./ArticleButtonView'),
     config = require('../Config.js')
     ;
 
@@ -15,6 +17,7 @@ module.exports = StorylineView.extend({
   initialize: function(options) {
     _.bindAll(this,'_onModelFetched');
     var _this = this;
+    this._headerView = new HeaderView();
     this._attributes =  new AttributeCollection();
     this._model = new StoryMapModel({'id':options.id, 'collection':this._attributes});
     
@@ -35,6 +38,17 @@ module.exports = StorylineView.extend({
     'click .info_button': '_fullInfo',
     'click .full_info .panel .close': '_closeFullInfo',
     'click .media .close': '_closeVideo',
+  },
+
+  render: function () {
+    this.$el.html(this._template());
+    this.$('#storymap').prepend(this._headerView.render().el);
+
+    this._articleButtonView = new ArticleButtonView({paisaje_id:this._model.get('id')});
+    this.$('.header').append(this._articleButtonView.render().$el);
+
+    this.$el.append(this._template_loading());
+    return this;
   },
 
   _onModelFetched:function(){
@@ -83,10 +97,20 @@ module.exports = StorylineView.extend({
         _this.$('.media').html(_this._template_loading());
         _this.$('.media').addClass('active');
         var model = new Backbone.Model()
-        model.url = 'https://' + config.username + '.carto.com/api/v2/sql?q=SELECT media_url FROM modos_narrativos_point WHERE cartodb_id =' + data.cartodb_id;
+        model.url = 'https://' + config.username + '.carto.com/api/v2/sql?q=SELECT media_url,tipo_media,titulo_video,descripcion_video FROM modos_narrativos_point WHERE cartodb_id =' + data.cartodb_id;
         model.fetch({
           success: function(data){
-            _this.$('.media').html('<div class="video"><div class="close"></div><iframe src="//player.vimeo.com/video/' + data.get('rows')[0].media_url + '?autoplay=1&color=2b2f35&loop=1" height="100%" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
+            if(data.get('rows')[0].tipo_media == 'video'){
+              _this.$('.media').html('<div class="video"><div class="close"></div><iframe src="//player.vimeo.com/video/' + data.get('rows')[0].media_url + '?autoplay=1&color=2b2f35&loop=1" height="100%" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
+            }else{
+              var bgImg = new Image();
+              bgImg.onload = function(){
+                _this.$('.media').html('<div class="video"><div class="close"></div><img src="' + bgImg.src + '"></div>');
+              };
+              bgImg.src = data.get('rows')[0].media_url;
+            }
+            if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
+              _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
           }
         });
       });

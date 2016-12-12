@@ -227,11 +227,11 @@ module.exports = BaseView.extend({
 
     this._removeBuffer(); 
     if(buffer == 'buffer_20'){
-      this._layer_buffer_20.getSubLayer(0).setSQL('SELECT b.cartodb_id, b.the_geom, b.the_geom_webmercator, tipo FROM buffer_20km b INNER JOIN sistemaslineales s on s.cartodb_id = b.id_lineas WHERE tipo=\'' + type + '\'' + (road ? 'and subcategor=\'' + road + '\'':''));
+      this._layer_buffer_20.getSubLayer(0).setSQL('SELECT b.cartodb_id, b.the_geom, b.the_geom_webmercator, s.tipo FROM sistemaslineales s INNER JOIN buffer_20km b on s.cartodb_id = b.id_lineas WHERE s.tipo=\'' + type + '\'' + (road ? 'and subcategor=\'' + road + '\'':''));
       this._layer_buffer_20.addTo(this.map);
 
     }else if(buffer == 'buffer_40'){
-      this._layer_buffer_40.getSubLayer(0).setSQL('SELECT b.cartodb_id, b.the_geom, b.the_geom_webmercator, tipo FROM buffer_40km b INNER JOIN sistemaslineales s on s.cartodb_id = b.id_lineas WHERE tipo=\'' + type + '\'' + (road ? 'and subcategor=\'' + road + '\'':''));
+      this._layer_buffer_40.getSubLayer(0).setSQL('SELECT b.cartodb_id, b.the_geom, b.the_geom_webmercator, s.tipo FROM buffer_40km b INNER JOIN sistemaslineales s on s.cartodb_id = b.id_lineas WHERE s.tipo=\'' + type + '\'' + (road ? 'and subcategor=\'' + road + '\'':''));
       this._layer_buffer_40.addTo(this.map);
     }
 

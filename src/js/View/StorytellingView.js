@@ -1,8 +1,10 @@
 "use strict";
 var BaseView = require('./BaseView'),
+    HeaderView = require('./HeaderView'),
     CartoCollection = require('../Collection/CartoCollection'),
     AttributeCollection = require('../Collection/AttributeCollection'),
     StorytellingModel = require('../Model/StorytellingModel'),
+    ArticleButtonView = require('./ArticleButtonView'),
     config = require('../Config.js')
     ;
 
@@ -15,9 +17,11 @@ module.exports = BaseView.extend({
   initialize: function(options) {
     _.bindAll(this,'_onModelFetched');
     var _this = this;
+    this._headerView = new HeaderView();
     this._attributes =  new AttributeCollection();
     this._secuences =  new CartoCollection();
-    this._secuences.url = 'https://' + config.username + '.carto.com/api/v2/sql?q=SELECT sec.id_paisaje,atr.cartodb_id as id, atr.nombre_opcion, atr.url_secuencia, atr.modo_secuencia  FROM storytelling_secuencia sec INNER JOIN storytelling_secuencia_atributos atr on sec.cartodb_id = atr.id_secuencia where sec.id_paisaje=' + options.id + ' order by orden_opcion'
+    
+    this._secuences.url = 'https://' + config.username + '.carto.com/api/v2/sql?q=SELECT sec.cartodb_id as sec_id, sec.titulo_secuencia, sec.id_paisaje,atr.cartodb_id as id, atr.nombre_opcion, atr.url_secuencia, atr.modo_secuencia  FROM storytelling_secuencia sec INNER JOIN storytelling_secuencia_atributos atr on sec.cartodb_id = atr.id_secuencia where sec.id_paisaje=' + options.id + ' order by sec.cartodb_id,orden_opcion'
     this._model = new StorytellingModel({'id':options.id, 'collection':this._attributes});
     
     this.listenTo(this._secuences,'reset',function(){
@@ -41,8 +45,23 @@ module.exports = BaseView.extend({
 
   render: function () {
   	this.$el.html(this._template());
+    this.$('#storytelling').prepend(this._headerView.render().el);
+    
+    this._articleButtonView = new ArticleButtonView({paisaje_id:this._model.get('id')});
+    this.$('.header').append(this._articleButtonView.render().$el);
+
     this.$el.append(this._template_loading());
   	return this;
+  },
+
+  remove: function(){
+    
+    Backbone.View.prototype.remove.call(this);
+    if(this._headerView)
+      this._headerView.remove();
+
+    if(this._articleButtonView)
+      this._articleButtonView.remove();
   },
 
   _onModelFetched:function(){
@@ -51,7 +70,7 @@ module.exports = BaseView.extend({
     this.$('.content').addClass(this._model.get('cat_color'));
     
     this.$('.content').html(this._template_content({'m':this._model.toJSON(), 'filters':this._model.generateFilters(), 'secuences':this._secuences.toJSON()}));
-
+    
     var _this = this;
 
     setTimeout(function(){
@@ -93,13 +112,33 @@ module.exports = BaseView.extend({
         });
 
         layer.on('featureClick', function(e, latlng, pos, data) {
+          
           var model = new Backbone.Model()
           _this.$('.map .video_wrapper').addClass('active');
+          _this.$('.map .video_wrapper .video_info h5').text('')
+          _this.$('.map .video_wrapper .video_info p').text('')
+
           _this.$('.map .video_wrapper .video').html(_this._template_loading());
-          model.url = 'https://' + config.username + '.carto.com/api/v2/sql?q=SELECT media_url FROM modos_narrativos_point WHERE cartodb_id =' + data.cartodb_id;
+          model.url = 'https://' + config.username + '.carto.com/api/v2/sql?q=SELECT media_url,tipo_media,titulo_video,descripcion_video FROM modos_narrativos_point WHERE cartodb_id =' + data.cartodb_id;
           model.fetch({
             success: function(data){
-              _this.$('.map .video_wrapper .video').html('<iframe src="//player.vimeo.com/video/' + data.get('rows')[0].media_url + '?autoplay=1&color=2b2f35&loop=1" height="600" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
+              if(data.get('rows')[0].tipo_media == 'video'){
+                _this.$('.map .video_wrapper .video').html('<iframe src="//player.vimeo.com/video/' + data.get('rows')[0].media_url + '?autoplay=1&color=2b2f35&loop=1" height="600" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
+              }else{
+                var bgImg = new Image();
+                bgImg.onload = function(){
+                  _this.$('.map .video_wrapper .video').html('<img src="' + bgImg.src + '">')
+                };
+                bgImg.src = data.get('rows')[0].media_url;
+              }
+
+              if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video){
+                _this.$('.map .video_wrapper .video_info h5').text(data.get('rows')[0].titulo_video)
+                _this.$('.map .video_wrapper .video_info p').html(data.get('rows')[0].descripcion_video)
+                _this.$('.map .video_wrapper .video_info').removeClass('hide');
+              }else{
+                _this.$('.map .video_wrapper .video_info').addClass('hide');
+              }
             }
           });
         });
@@ -111,7 +150,10 @@ module.exports = BaseView.extend({
     }
 
     if(this._secuences.length > 0){
-      this._loadSecuence(this._secuences.toJSON()[0].id)
+      var _this = this;
+      _.each(_.groupBy(this._secuences.toJSON(), function(sec){ return sec.sec_id; }), function(s) {
+        _this._loadSecuence(s[0].id)
+      });
     }
 
     this.$('.content').addClass('active');
@@ -133,7 +175,7 @@ module.exports = BaseView.extend({
   },
 
   _selectSecuence:function(e){
-    this.$('.secuence_list li').removeClass('active');
+    this.$(e.currentTarget).closest('ul').find('li').removeClass('active');
     $(e.currentTarget).addClass('active');
     this._loadSecuence(parseInt($(e.currentTarget).attr('carto_id')));
   },
@@ -141,16 +183,16 @@ module.exports = BaseView.extend({
   _loadSecuence:function(id){
     var model = this._secuences.get(id);
     var _this = this;
-    this.$('#sec_vis').addClass('mask');
+    this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').addClass('mask');
     if(model.get('modo_secuencia') == 'mapa'){
-      this.$('#sec_vis').removeClass('image')
+      this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').removeClass('image')
       setTimeout(function(){
-        _this.$('#sec_vis').children().remove()
-        cartodb.createVis(_this.$('#sec_vis')[0], 'http://gipc-admin.carto.com/api/v2/viz/' + model.get('url_secuencia') + '/viz.json', {'legends' : true, 'search':false, 'zoomControl':true, 'shareable':false, 'infowindow':true, 'scrollWheelZoom':true})
+        _this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').children().remove()
+        cartodb.createVis(_this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']')[0], 'http://gipc-admin.carto.com/api/v2/viz/' + model.get('url_secuencia') + '/viz.json', {'legends' : true, 'search':false, 'zoomControl':true, 'shareable':false, 'infowindow':true, 'scrollWheelZoom':true})
         .done(function(vis, layers) {
-          _this.$('#sec_vis .cartodb-zoom').remove();
+          _this.$('.sec_vis[sec_id=' + model.get('sec_id') + '] .cartodb-zoom').remove();
           new L.Control.Zoom({ position: 'bottomleft' }).addTo(vis.getNativeMap());
-          _this.$('#sec_vis').removeClass('mask');
+          _this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').removeClass('mask');
          }).on('error', function(err) {
           console.log(err);
         });
@@ -158,11 +200,24 @@ module.exports = BaseView.extend({
       },200);
 
     }else{
-      setTimeout(function(){
-        _this.$('#sec_vis').addClass('image')
-        _this.$('#sec_vis').css({'background-image':'url("/img/secuences/' + model.get('id_paisaje') + '/' + model.get('url_secuencia') + '"'})
-          _this.$('#sec_vis').removeClass('mask');
-      },200);
+      _this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').html(this._template_loading());
+      // setTimeout(function(){
+      //   _this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').addClass('image')
+      //   _this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').css({'background-image':'url("' + model.get('url_secuencia') + '")'})
+      //   _this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').removeClass('mask');
+      // },200);
+      _this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').removeClass('mask');
+      var bgImg = new Image();
+      bgImg.onload = function(){
+        _this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').css({'background-image':'url("' + bgImg.src + '")'});
+        _this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').addClass('image');
+        _this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').addClass('mask');
+        setTimeout(function(){
+          _this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').find('.loading').remove();
+          _this.$('.sec_vis[sec_id=' + model.get('sec_id') + ']').removeClass('mask');
+        },250);
+      };
+      bgImg.src = model.get('url_secuencia');
     }
   }
 

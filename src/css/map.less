@@ -57,6 +57,36 @@
       background-image: url('/img/GIPC-vista-canarias.png');
     }
   }
+  .articles_link{
+    position: absolute;
+    z-index: 1;
+    top: 22px;
+    // top: 34px;
+    right: 166px;
+    font-size: 16px;
+    color:@grey;
+    background-color: rgba(36,36,38,.8);
+    height: 50px;
+    border-radius: 16px;
+    display: flex;
+    align-items:center;
+    padding-left: 10px;
+    padding-right: 20px;
+    transform: translateY(-200px);
+    transition: transform .25s;
+    &.enable{
+      transform: translateY(0);
+    }
+    &:before{
+      content: '';
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background-image: url(/img/GIPC-boton-articulos.svg);
+      background-size: cover;
+      margin-right: 10px;
+    }
+  }
 }
 
 input[type=button].mapbutton{
@@ -121,11 +151,13 @@ input[type=button].mapbutton{
   }
 
   &.natural{
-    right: 85px;
+    right: 35px;
     background-image: url('/img/GIPC-boton-entorno.svg');
     border-radius: 0;
     border-left: 2px solid @black;
-    border-right: 2px solid @black;
+    // border-right: 2px solid @black;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
     &.active{
       background-image: url('/img/GIPC-boton-entorno-2.svg');
     }
@@ -134,7 +166,7 @@ input[type=button].mapbutton{
   &.linear_system{
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
-    right: 135px;
+    right: 85px;
     background-image: url('/img/GIPC-boton-lineales.svg');
     &.active{
       background-image: url('/img/GIPC-boton-lineales-2.svg');

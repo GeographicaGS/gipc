@@ -1,0 +1,12 @@
+<%if(articles.length == 1){%>
+	<a class="article" jslink href="/article/<%=articles[0].id%>">Ver artículo</a>
+<%}else{%>
+<span class="article" jslink href="">Ver artículos
+	<ul>
+		<%_.each(articles,function(a){%>
+			<li><a jslink href="/article/<%=a.id%>"><%=a.titulo%></a></li>
+		<%})%>
+	</ul>
+</span>
+<%}%>
+

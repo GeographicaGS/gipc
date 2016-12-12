@@ -1,8 +1,10 @@
 "use strict";
 var BaseView = require('./BaseView'),
+    HeaderView = require('./HeaderView'),
     AttributeCollection = require('../Collection/AttributeCollection'),
     StorylineModel = require('../Model/StorylineModel'),
     StoryInfoPanelView = require('./StoryInfoPanelView'),
+    ArticleButtonView = require('./ArticleButtonView'),
     config = require('../Config.js')
     ;
 
@@ -15,6 +17,7 @@ module.exports = BaseView.extend({
   initialize: function(options) {
     _.bindAll(this,'_onModelFetched');
     var _this = this;
+    this._headerView = new HeaderView({type:'line'});
     this._attributes =  new AttributeCollection();
     this._model = new StorylineModel({'id':options.id, 'collection':this._attributes});
     
@@ -36,14 +39,26 @@ module.exports = BaseView.extend({
   },
 
   remove: function(){
+    
     Backbone.View.prototype.remove.call(this);
 
     if(this._storyInfoPanelView)
       this._storyInfoPanelView.remove();
+
+    if(this._headerView)
+      this._headerView.remove();
+
+    if(this._articleButtonView)
+      this._articleButtonView.remove();
   },
 
   render: function () {
   	this.$el.html(this._template());
+    this.$('#storyline').prepend(this._headerView.render().el);
+
+    this._articleButtonView = new ArticleButtonView({paisaje_id:this._model.get('id')});
+    this.$('.header >div').append(this._articleButtonView.render().$el);
+
     this.$el.append(this._template_loading());
   	return this;
   },
@@ -54,6 +69,7 @@ module.exports = BaseView.extend({
     this.$('.loading').remove();
     this.$('#storyline').addClass('active');
     this.$('.content').addClass(this._model.get('cat_color'));
+    this.$('.media').addClass(this._model.get('cat_color'));
     this.$('.media').css({'background-image':'url("/img/gallery/thumbnail/' + this._model.get('id') + '.jpg")'});
     
     this.$('.content').html(this._template_content({'m':this._model.toJSON()}));
@@ -93,11 +109,24 @@ module.exports = BaseView.extend({
         _this.$('.media').css({'background-image':''});
         _this.$('.media').html(_this._template_loading());
         var model = new Backbone.Model()
-        model.url = 'https://' + config.username + '.carto.com/api/v2/sql?q=SELECT media_url FROM modos_narrativos_point WHERE cartodb_id =' + data.cartodb_id;
+        model.url = 'https://' + config.username + '.carto.com/api/v2/sql?q=SELECT media_url,tipo_media,titulo_video,descripcion_video FROM modos_narrativos_point WHERE cartodb_id =' + data.cartodb_id;
         model.fetch({
           success: function(data){
             _this.$('.show_video').addClass('active');
-            _this.$('.media').html('<iframe src="//player.vimeo.com/video/' + data.get('rows')[0].media_url + '?autoplay=1&color=2b2f35&loop=1" height="100%" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
+            
+            if(data.get('rows')[0].tipo_media == 'video'){
+              _this.$('.show_video').text('Ver vídeo');
+              _this.$('.media').html('<iframe src="//player.vimeo.com/video/' + data.get('rows')[0].media_url + '?autoplay=1&color=2b2f35&loop=1" height="100%" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
+            }else{
+              _this.$('.show_video').text('Ver imagen');
+              var bgImg = new Image();
+              bgImg.onload = function(){
+                _this.$('.media').html('<div class="image_media" style="background-image:url(' + bgImg.src + ');"></div>')
+              };
+              bgImg.src = data.get('rows')[0].media_url;
+            }
+            if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
+              _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
           }
         });
       });

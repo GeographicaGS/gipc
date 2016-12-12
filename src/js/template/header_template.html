@@ -1,0 +1,14 @@
+<div class="header">
+	<img src="/img/logo-narrando-paisajes.png">
+	<%if(type=="line"){%>
+	<div>
+		<a jslink href="/map">Volver al mapa</a>
+		<a class="show_video" href="#">Ver vídeo</a>
+		<a class="show_info" href="#">Ver información</a>
+	</div>
+	<%}else if(type=="article"){%>
+		<a jslink href="/articles">Artículos</a>
+	<%}else{%>
+		<a jslink href="/map">Volver al mapa</a>
+	<%}%>
+</div>

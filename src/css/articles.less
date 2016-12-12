@@ -1,0 +1,93 @@
+#articles{
+	background-color: @black;
+	flex:0;
+	opacity: 0;
+	transition: opacity .25s linear;
+	&.active{
+		flex: 1 1 auto;
+		opacity: 1;
+	}
+	.container{
+		padding-bottom: 200px;
+	}
+	h1{
+		font-size: 40px;
+		font-weight: bold;
+		color:@grey;
+		border-bottom: 1px solid @grey;
+		padding-bottom: 10px;
+		margin-top: 20px;
+	}
+	.article{
+		margin-top: 86px;
+		max-width: 60%;
+		&:nth-child(odd){
+			text-align: right;
+			margin-left: auto;
+		}
+		h3{
+			font-weight: bold;
+			font-size: 30px;
+			color:@grey;
+		}
+		p{
+			font-weight: 400;
+		}
+		p,span{
+			font-size: 24px;
+			color:@grey_2;
+			margin-top: 10px;
+		}
+		.author{
+			font-weight: bold; 
+			font-style: italic;
+			display: block;
+			&:before{
+				content: '';
+				display: inline-block;
+				width: 50px;
+				height: 1px;
+				background-color: @grey_2;
+				position: relative;
+				bottom: 7px;
+				margin-right: 10px;
+			}
+		}
+		.land{
+			font-size: 14px;
+			font-weight: 400;
+			color:@grey;
+			margin-top: 16px;
+			display: block;
+			&:before{
+				content: '';
+				display: inline-block;
+				width: 10px;
+				height: 10px;
+				background-color: @red;
+				margin-right: 5px;
+				border-radius: 100%;
+			}
+			&.yellow{
+				&:before{
+					background-color: @yellow;
+				}
+			}
+			&.blue{
+				&:before{
+					background-color: @blue;
+				}	
+			}
+			&.green{
+				&:before{
+					background-color: @green;
+				}
+			}
+			&.red{
+				&:before{
+					background-color: @red;
+				}
+			}
+		}
+	}
+}

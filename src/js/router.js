@@ -5,7 +5,9 @@ var $ = require('jquery'),
 		MapView = require('./View/MapView'),
     StorytellingView = require('./View/StorytellingView'),
     StorylineView = require('./View/StorylineView'),
-    StorymapView = require('./View/StorymapView')
+    StorymapView = require('./View/StorymapView'),
+    ArticlesView = require('./View/ArticlesView'),
+    ArticleView = require('./View/ArticleView')
 		;
 
 
@@ -19,6 +21,8 @@ module.exports = Backbone.Router.extend({
         "storytelling/:id": "storytelling",
         "storyline/:id": "storyline",
         "storymap/:id": "storymap",
+        "articles": "articles",
+        "article/:id": "article"
     },
 
     initialize: function(options) {
@@ -43,6 +47,14 @@ module.exports = Backbone.Router.extend({
 
     storymap:function(id){
       this._App.showView(new StorymapView({'id':id}).render());
+    },
+
+    articles:function(){
+      this._App.showView(new ArticlesView().render());
+    },
+
+    article:function(id){
+      this._App.showView(new ArticleView({'id':id}).render());
     }
 
 });

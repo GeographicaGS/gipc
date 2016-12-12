@@ -9,6 +9,7 @@
 @black_light4:#afb1b4;
 @dark_grey: #505860;
 @grey: #667c80;
+@grey_2:#919ea1;
 @grey_light: #a3b0b3;
 @grey_light_2: #dadfe1;
 @separator_grey:#cdd0d2;
@@ -68,7 +69,8 @@ body{
   	display: flex;
   	flex-direction: column;
   	>div{
-  		flex: 1 1 100%;
+  		// flex: 1 1 100%;
+      flex: 1 1 auto;
 	  	display: flex;
 	  	flex-direction: column;
   	}
@@ -104,9 +106,13 @@ body{
   			pointer-events: all;
   		}
       .cartodb-popup.header.v2.header{
+        display: block;
         box-shadow: none;
         border-radius: 0;
         background-color: @black;
+        a{
+          margin: 0;
+        }
         &.purple{
           div.cartodb-popup-header{
             background:@purple_10 !important;
@@ -165,9 +171,9 @@ body{
             margin-top: 0;
           }
         }
-        p{
-          margin-top: 10px;
-        }
+        // p{
+        //   margin-top: 10px;
+        // }
       }
       div.cartodb-popup.v2 div.cartodb-popup-tip-container:before{
         display: none;
@@ -343,38 +349,6 @@ body{
   }
 
   #storytelling, #storyline, #storymap{
-    .header, .back{
-      height: 112px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      a{
-        font-size: 20px;
-        color:@grey;
-        font-weight: 400;
-        position: relative;
-        &:before{
-          content: url('/img/GIPC-flecha.svg');
-          display: inline-block;
-          margin-right: 18px;
-          position: relative;
-          top: 3px;
-          // position: absolute;
-          // left: -48px;
-          // top: -8px;
-          transform: rotate(180deg);
-        }
-      }
-    }
-    .header{
-      img{
-        margin-left: 50px;
-      }
-      a{
-        margin-left: auto;
-        margin-right: 50px;
-      }
-    }
     .content{
       &.yellow{
         h1,h2,h3,h4,h5{
@@ -409,11 +383,133 @@ body{
         }
       }
     }
+    .video img{
+      height: 100%;
+      max-width: 100%;
+      display: block;
+      margin: 0 auto;
+    }
+    .video_info{
+      h5{
+        font-weight: bold;
+        font-size: 30px;
+        line-height: 30px;
+        margin-bottom: 10px;
+      }
+      p{
+        font-size: 18px;
+        color: @white;
+      }
+    }
   }
 
   #storyline, #storymap{
     .leaflet-bottom.leaflet-left{
       left: 74px;
+    }
+  }
+
+  #storytelling,#articles,#article{
+    .header{
+      background-color: @black_light; 
+    }
+  }
+
+  .header{
+    img{
+      margin-left: 50px;
+    }
+    a,span{
+      margin-left: auto;
+      margin-right: 50px;
+      &.land{
+        margin-left: 0;
+        &.storytelling{
+          &:before{
+            content: url('/img/GIPC-historia-storytelling_grey.svg');
+          }
+        }
+        &.storymap{
+          &:before{
+            content: url('/img/GIPC-historia-mapa_grey.svg');
+          }
+        }
+        &.storyline{
+          &:before{
+            content: url('/img/GIPC-historia-linea_grey.svg');
+          }
+        }
+      }
+      &.article{
+        margin-left: 0;
+        width: 148px;
+        position: relative;
+        &:before{
+          position: relative;
+          top: 8px;
+          content: url('/img/GIPC-boton-articulos_mini.svg');
+          transform: rotate(0);
+        }
+        &:hover{
+          padding-bottom: 16px;
+          ul{
+            pointer-events: all;
+            opacity: 1;
+            transform: translateY(10px);
+          }
+        }
+        ul{
+          transition: opacity .25s linear,transform .25s linear;
+          opacity: 0;
+          pointer-events: none;
+          position: absolute;
+          right: 0;
+          background-color: rgba(36,36,38,.8);
+          padding: 15px;
+          border-radius: 2px;
+          li{
+            white-space: nowrap;
+            margin-top: 10px;
+            &:first-child{
+              margin-top: 0;
+            }
+            a{
+              margin-right: 0;
+              font-size: 16px;
+              &:before{
+                display: none;
+              }
+              &:hover{
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .header, .back{
+    height: 112px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    a,span{
+      cursor: pointer;
+      font-size: 20px;
+      color:@grey;
+      font-weight: 400;
+      position: relative;
+      &:before{
+        content: url('/img/GIPC-flecha.svg');
+        display: inline-block;
+        margin-right: 18px;
+        position: relative;
+        top: 3px;
+        // position: absolute;
+        // left: -48px;
+        // top: -8px;
+        transform: rotate(180deg);
+      }
     }
   }
 
@@ -462,7 +558,7 @@ body{
     font-size: 13px;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     font-weight: 400;
     .geo{
       margin-right: 20px;
@@ -477,6 +573,16 @@ body{
         top: 3px;
         margin-left: 10px;
       }
+    }
+    .credit_button{
+      background-color: @grey;
+      color:@white;
+      font-size: 16px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 30px;
+      cursor: pointer;
     }
   }
 
@@ -496,3 +602,5 @@ body{
 @import "src/css/storytelling.less";
 @import "src/css/storyline.less";
 @import "src/css/storymap.less";
+@import "src/css/articles.less";
+@import "src/css/article.less";

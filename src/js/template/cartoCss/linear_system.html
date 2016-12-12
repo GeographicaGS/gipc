@@ -2,6 +2,14 @@
    line-width: 2;
 }
 
+#sistemaslineales [clase="Primaria"] {
+   line-width: 3;
+}
+
+#sistemaslineales [clase="Secundaria"] {
+   line-width: 1;
+}
+
 #sistemaslineales[tipo="Calzada Romana"] {
   line-color: #ffb452;
   line-opacity: <%=opacity%>;
@@ -16,6 +24,10 @@
 }
 #sistemaslineales[tipo="Vía Pecuaria"] {
    line-color: #8cc63f;
+   line-opacity: <%=opacity%>;
+}
+#sistemaslineales[tipo="Ríos"] {
+   line-color: #5CA2D1;
    line-opacity: <%=opacity%>;
 }
 
@@ -43,6 +55,9 @@
 		}
 		[tipo="Vía Pecuaria"]{
 			line-color: #aedd64;
+		}
+		[tipo="Ríos"]{
+			line-color: #5CA2D1;
 		}
 
 	}

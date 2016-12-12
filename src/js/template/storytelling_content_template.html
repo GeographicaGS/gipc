@@ -30,11 +30,15 @@
 	<div class="map">
 		<div class="video_wrapper">
 			<div class="video"></div>
+			<div class="video_info">
+				<h5></h5>
+				<p></p>
+			</div>
 			<div class="close"></div>
 		</div>
 	</div>
 <%}%>
-<div class="section col_wrapper">
+<!-- <div class="section col_wrapper">
 	<div class="col">
 		<h3>Título de sección</h3>
 	</div>
@@ -42,19 +46,19 @@
 		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi metus lectus, commodo vitae feugiat quis, ullamcorper ac ipsum. Praesent vel justo aliquam, tempor augue non, sodales enim. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam posuere metus ligula, vitae commodo ante commodo at. Phasellus convallis quam vel diam viverra, in ultrices lectus sodales. Praesent posuere massa id purus efficitur placerat. Mauris eu porta nisi. Cras vitae molestie leo. Maecenas at iaculis lorem, vel tempus tellus. Vivamus pharetra turpis euismod mauris bibendum faucibus. Nullam vehicula varius leo, a semper augue gravida ut. Duis et sagittis enim. Pellentesque convallis nisi vitae velit faucibus, a imperdiet diam sagittis
 		</p>
 	</div>
-</div>
+</div> -->
 
-<%if(m.titulo_secuencia){%>
+<%_.each(_.groupBy(secuences, function(sec){ return sec.sec_id; }),function(s){%>
 	<div class="historical">
-		<h3><%=m.titulo_secuencia.split(" ").join("<br>")%></h3>
-		<div id="sec_vis"></div>
+		<h3><%=s[0].titulo_secuencia.split(" ").join("<br>")%></h3>
+		<div class="sec_vis" sec_id="<%=s[0].sec_id%>"></div>
 		<ul class="secuence_list">
-			<%_.each(secuences, function(s,i) {%>
-	    	<li carto_id="<%=s.id%>" class="<%=i==0 ? 'active':''%>"><%=s.nombre_opcion%></li>  
+			<%_.each(s, function(ss,i) {%>
+	    	<li carto_id="<%=ss.id%>" class="<%=i==0 ? 'active':''%>"><%=ss.nombre_opcion%></li>  
 	    <%})%>
 		</ul>
 	</div>
-<%}%>
+<%})%>
 
 <div class="section col_wrapper">
 	<div class="col">

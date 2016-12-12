@@ -23,18 +23,18 @@ module.exports = BaseView.extend({
       'title':'Parque Nacional',
       'enable':false
     },
-    {
-      'title':'Ramsar',
-      'enable':false
-    },
+    // {
+    //   'title':'Ramsar',
+    //   'enable':false
+    // },
     {
       'title':'Reserva Biosfera',
       'enable':false
-    },
-    {
-      'title':'ZEPA',
-      'enable':false
     }
+    // {
+    //   'title':'ZEPA',
+    //   'enable':false
+    // }
 
     ]);
   },

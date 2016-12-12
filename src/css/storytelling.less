@@ -1,8 +1,6 @@
 #storytelling{
-	.header, .back{
-		background-color: @black_light;
-	}
 	.back{
+		background-color: @black_light;
 		margin-top: 100px;
 		justify-content: center;
 	}
@@ -151,6 +149,7 @@
 			.col{
 				flex: 0 1 565px;
 				&:first-child{
+					margin-left: 10px;
 					margin-right: 130px;
 				}
 			}
@@ -201,7 +200,7 @@
 				left: 0;
 				width: 100%;
 				height: 100%;
-				background-color: rgba(0, 0, 0, 0.2);
+				background-color: rgba(0, 0, 0, 0.8);
 				z-index: 1;
 				opacity: 0;
 				pointer-events: none;
@@ -216,6 +215,11 @@
 				.video{
 					width: 70%;
 					height: 600px;
+					margin-left: 30px;
+				}
+				.video_info{
+					width: 30%;
+			    margin: 0 30px;
 				}
 				.close{
 					position: absolute;
@@ -272,17 +276,24 @@
 				left: 46px;
 				z-index: 1;
 			}
-			#sec_vis{
+			.sec_vis{
 				width: 100%;
 				height: 786px;
-				opacity: 1;
 				transition: opacity .2s linear;
+				opacity: 1;
 				&.image{
 					background-size: cover;
 					background-position: center;
 				}
 				&.mask{
+			    transition: none;
 					opacity: 0;
+				}
+				.loading{
+					background-color: rgba(0,0,0,0.8);
+					svg path{
+						stroke:@white;
+					}
 				}
 			}
 			.secuence_list{

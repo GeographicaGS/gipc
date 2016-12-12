@@ -2,7 +2,9 @@
 
 var $ = require('jquery'),
 		Backbone = require('backbone'),
-		Router = require('./router');
+		Router = require('./router'),
+		CreditsView = require('./View/CreditsView')
+		;
 
 
 Backbone.$ = $;
@@ -11,6 +13,8 @@ var App = module.exports = {
 	ini: function () {
 		this.$main = $('main');
 		this.router = new Router({'App':this});
+		this.creditsView = new CreditsView();
+		$('body').append(this.creditsView.render().$el);
 		Backbone.history.start({pushState: true});
 	},
 
@@ -62,4 +66,8 @@ $('body').on('click','a',function(e){
     App.router.navigate(href,{trigger: true});
   }
   
+});
+
+$('footer .credit_button').on('click',function(e){
+  App.creditsView.$el.toggleClass('active')
 });

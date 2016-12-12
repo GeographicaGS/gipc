@@ -18,6 +18,9 @@
 		.content{
 			opacity: 0;
 		}
+		&.active .media .video_info{
+			opacity: 1;
+		}
 	}
 
 	.header{
@@ -202,6 +205,40 @@
 			height: ~ "calc(100% - 35px)" ;
       background-size: cover;
       background-position: center;
+      &.yellow .video_info{
+				h5{
+					color: @yellow;
+				}
+			}
+			&.blue .video_info{
+				h5{
+					color: @blue;
+				}
+			}
+			&.green .video_info{
+				h5{
+					color: @green;
+				}
+			}
+			&.red .video_info{
+				h5{
+					color: @red;
+				}
+			}
+      .video_info{
+      	transition: opacity .25s linear;
+      	opacity: 0;
+      	position: absolute;
+				right: 50px;
+				bottom: 50px;
+				max-width: 392px;
+      }
+      .image_media{
+				width:100%;
+				height:100%;
+				background-size: cover;
+				background-position: center;
+			}
 		}
 	}
 }
