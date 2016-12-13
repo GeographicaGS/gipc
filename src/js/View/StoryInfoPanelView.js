@@ -14,7 +14,8 @@ module.exports = BaseView.extend({
   },
 
   render: function () {
-  	this.setElement(this._template({'m':this.model.toJSON(),'filters':this.model.generateFilters(), 'thumbnail':this._thumbnail}));
+  	// this.setElement(this._template({'m':this.model.toJSON(),'filters':this.model.generateFilters(), 'thumbnail':this._thumbnail}));
+    this.setElement(this._template({'m':this.model.toJSON(),'filters':this.model._attributesCollection.toJSON(), 'thumbnail':this._thumbnail}));
   	return this;
   },
 

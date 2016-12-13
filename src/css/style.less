@@ -183,7 +183,7 @@ body{
       }
   	}
 
-    h4.filter, h6.filter{
+    h4.filter, h6.filter, li.filter{
         &:before{
           position: relative;
           top:5px;
@@ -223,6 +223,43 @@ body{
           &:before{
             content: url('/img/GIPC-geograficos.svg');
           } 
+        }
+        &.dark{
+          &.settlement{
+            &:before{
+              content: url('/img/GIPC-asentamientos-2.svg');
+            }
+          }
+          &.infrastructure{
+            &:before{
+              content: url('/img/GIPC-infraestructuras-2.svg');
+            } 
+          }
+          &.religion{
+            &:before{
+              content: url('/img/GIPC-religiosas-2.svg');
+            } 
+          }
+          &.explotation{
+            &:before{
+              content: url('/img/GIPC-explotacion-2.svg');
+            } 
+          }
+          &.declaration{
+            &:before{
+              content: url('/img/GIPC-declaracion-2.svg');
+            } 
+          }
+          &.normative{
+            &:before{
+              content: url('/img/GIPC-normativa-2.svg');
+            } 
+          }
+          &.geograph{
+            &:before{
+              content: url('/img/GIPC-geograficos-2.svg');
+            } 
+          }
         }
       }
 

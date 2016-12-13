@@ -58,7 +58,7 @@ module.exports = StorylineView.extend({
     this.$('#storymap').addClass('active');
     this.$('.content').addClass(this._model.get('cat_color'));
 
-    this.$('.content').html(this._template_content({'m':this._model.toJSON(), 'filters':this._model.generateFilters()}));
+    this.$('.content').html(this._template_content({'m':this._model.toJSON()}));
     this.$('.content').append(this._storyInfoPanelView.render().el);
 
     this.map = new L.Map(this.$('.map')[0], {

@@ -14,15 +14,17 @@
 			<p><%=m.descripcio%></p>
 			<div class="separator"></div>
 			<div class="attributes">
+				<h6>Valores asociados</h6>
 
 				<%_.each(filters,function(f){%>
-					<h6 class="filter <%=App.getClassByFilter(f.grupo)%>"><%=f.grupo%></h6>
-					<ul>
+					<!-- <h6 class="filter <%=App.getClassByFilter(f.grupo)%>"><%=f.grupo%></h6> -->
+					<h6 class="filter dark <%=App.getClassByFilter(f.name_column)%>"><%=f.description%></h6>
+					<!-- <ul> -->
 						<%_.each(f.attributes,function(a){%>
-						<li><%=a.description%></li>
+						<!-- <li><%=a.description%></li> -->
 						<%})%>
-					</ul>
-					<div class="separator"></div>
+					<!-- </ul> -->
+					<!-- <div class="separator"></div> -->
 				<%})%>
 
 

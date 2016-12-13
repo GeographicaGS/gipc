@@ -57,22 +57,8 @@ module.exports = BaseView.extend({
   _onModelFetched:function(){
   	var _this = this;
 
-  	// var filters = [];
-  	// _.each(this._collection.toJSON(), function(f) {
-  	// 	var attributes = 
-  	// 	_.filter(
-  	// 		_.map(f.attributes, function(a){ 
-	  // 			if(_this._model.get(a.name_column))
-	  // 				return a;
-	  // 			else
-	  // 				return null
-	  // 		}),
-  	// 	function(obj){ return obj != null });
-  	// 	if(attributes.length > 0)
-  	// 		filters.push({'grupo':f.grupo, 'attributes':attributes})
-  	// });
-
-  	this.$('.wrapper').html(this._template_info({'m':this._model.toJSON(), 'filters':this._model.generateFilters()}));
+  	// this.$('.wrapper').html(this._template_info({'m':this._model.toJSON(), 'filters':this._model.generateFilters()}));
+    this.$('.wrapper').html(this._template_info({'m':this._model.toJSON(), 'filters':this._model._attributesCollection.toJSON()}));
   	this._drawMap();
   	
   	setTimeout(function(){ 

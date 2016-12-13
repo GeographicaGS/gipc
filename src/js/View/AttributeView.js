@@ -31,17 +31,22 @@ module.exports = BaseView.extend({
   },
 
   _drawAttributes:function(){
-    this.$('.content').html(this._template_list({'elements':this._collection}));
+    // this.$('.content').html(this._template_list({'elements':this._collection}));
+    this.$('.content').html(this._template_list({'elements':this._collection.toJSON()}));
   },
 
   _toggleAttribute:function(e){
     $(e.currentTarget).toggleClass('active');
     var column = $(e.currentTarget).attr('column');
-    _.each(this._collection.toJSON(),function(col) {
-      var attribute = _.findWhere(col.attributes, {name_column: column});
-      if(attribute)
-        attribute.enable = !attribute.enable;
-    });
+    // _.each(this._collection.toJSON(),function(col) {
+    //   var attribute = _.findWhere(col.attributes, {name_column: column});
+    //   if(attribute)
+    //     attribute.enable = !attribute.enable;
+    // });
+    var attribute = this._collection.findWhere({'name_column':column})
+    if(attribute)
+        attribute.set('enable',!attribute.get('enable'))
+
     if(this.$('li').not('.active').length > 0){
       this.$('.all').addClass('unselect');
       this.$('.mapbutton').addClass('filter');
@@ -54,10 +59,13 @@ module.exports = BaseView.extend({
   _toggleAll:function(e){
     $(e.currentTarget).toggleClass('unselect');
     var enable = $(e.currentTarget).hasClass('unselect') ? false:true;
-    _.each(this._collection.toJSON(),function(col) {
-      _.each(col.attributes, function(a) {
-        a.enable = enable;
-      });
+    // _.each(this._collection.toJSON(),function(col) {
+    //   _.each(col.attributes, function(a) {
+    //     a.enable = enable;
+    //   });
+    // });
+    _.each(this._collection.models,function(a) {
+      a.set('enable',enable);
     });
 
     if(enable)

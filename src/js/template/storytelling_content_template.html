@@ -8,18 +8,20 @@
 <div class="basic_info col_wrapper">
 	<div class="col">
 		<h1><%=m.nombre%></h1>
+		<h3>Valores asociados</h3>
 		<div class="attributes">
 			<%_.each(filters,function(f){%>
-				<h6 class="filter <%=App.getClassByFilter(f.grupo)%>"><%=f.grupo%></h6>
-				<ul>
+				<!-- <h6 class="filter <%=App.getClassByFilter(f.grupo)%>"><%=f.grupo%></h6> -->
+				<h6 class="filter <%=App.getClassByFilter(f.name_column)%>"><%=f.description%></h6>
+				<!-- <ul> -->
 					<%_.each(f.attributes,function(a){%>
-					<li><%=a.description%></li>
+					<!-- <li><%=a.description%></li> -->
 					<%})%>
-				</ul>
+				<!-- </ul> -->
 			<%})%>
 		</div>
 	</div>
-	<div class="col">
+	<div class="col top">
 		<h3><%=m.cat_ipce%></h3>
 		<h4><%=m.provincia%></h4>
 		<h5><%=m.local_punt%></h5>
