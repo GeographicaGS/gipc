@@ -84,7 +84,7 @@ module.exports = BaseView.extend({
 
   render: function () {
     var _this = this;
-  	this.$el.html('<div id="map"><img class="logo" src="/img/logo-narrando-paisajes.png"><div class="map_selector"><a class="peninsula" href="#"></a><a class="canary" href="#"></a></div><a class="articles_link" href="/articles" jslink>Artículos relacionados</a></div>');
+  	this.$el.html('<div id="map"><img class="logo" src="/img/logo-narrando-paisajes.svg"><div class="map_selector"><a class="peninsula" href="#"></a><a class="canary" href="#"></a></div><a class="articles_link" href="/articles" jslink>Artículos relacionados</a></div>');
     
     // if(this._introView)
   	 // this.$el.append(this._introView.render().$el);
