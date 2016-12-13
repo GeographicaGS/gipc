@@ -42,7 +42,7 @@ module.exports = BaseView.extend({
   events: {
     'click .mapbutton': '_togglePanel',
     'click .spaces ul li': '_loadSpace',
-    'click .header .all': '_loadAll'
+    'click .header_natural .all': '_loadAll'
   },
 
   render: function () {
@@ -59,9 +59,9 @@ module.exports = BaseView.extend({
     var model = this._collection.findWhere({'title':$(e.currentTarget).text()});
     model.set('enable', !model.get('enable'));
     if(this._collection.where({'enable':false}).length == 0){
-      this.$('.header .all').removeClass('unselect');
+      this.$('.header_natural .all').removeClass('unselect');
     }else{
-      this.$('.header .all').addClass('unselect');
+      this.$('.header_natural .all').addClass('unselect');
     }
     this._loadLayer()
   },
