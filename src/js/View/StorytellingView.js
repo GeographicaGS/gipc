@@ -69,8 +69,7 @@ module.exports = BaseView.extend({
     this.$('.loading').remove();
     this.$('.content').addClass(this._model.get('cat_color'));
     
-    // this.$('.content').html(this._template_content({'m':this._model.toJSON(), 'filters':this._model.generateFilters(), 'secuences':this._secuences.toJSON()}));
-    this.$('.content').html(this._template_content({'m':this._model.toJSON(), 'filters':this._model._attributesCollection.toJSON(), 'secuences':this._secuences.toJSON()}));
+    this.$('.content').html(this._template_content({'m':this._model.toJSON(), 'filters':this._model.generateFilters(), 'secuences':this._secuences.toJSON()}));
     
     var _this = this;
 
@@ -99,9 +98,9 @@ module.exports = BaseView.extend({
           layer = layer.getSubLayer(layer.layers.length-1);
           layer.setInteraction(true);
         }else{
-          layer.setInteraction(true);
-          layer.getSubLayer(0).setInteraction(true);
-          layer.setInteractivity('cartodb_id')
+          // layer.setInteraction(true);
+          // layer.getSubLayer(0).setInteraction(true);
+          // layer.setInteractivity('cartodb_id')
         }
 
         layer.on('mouseover', function(e, latlng, pos, data) {

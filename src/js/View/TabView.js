@@ -57,8 +57,7 @@ module.exports = BaseView.extend({
   _onModelFetched:function(){
   	var _this = this;
 
-  	// this.$('.wrapper').html(this._template_info({'m':this._model.toJSON(), 'filters':this._model.generateFilters()}));
-    this.$('.wrapper').html(this._template_info({'m':this._model.toJSON(), 'filters':this._model._attributesCollection.toJSON()}));
+  	this.$('.wrapper').html(this._template_info({'m':this._model.toJSON(), 'filters':this._model.generateFilters()}));
   	this._drawMap();
   	
   	setTimeout(function(){ 

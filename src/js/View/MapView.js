@@ -14,6 +14,7 @@ var config = require('../Config.js'),
 
 module.exports = BaseView.extend({
 	
+  _template: require('../template/map_template.html'),
 	_template_info_window_landScape: require('../template/infoWindowLandScape_template.html'),
   _torque_cartocss: require('../template/cartoCss/torque_cartocss.html'),
 
@@ -84,7 +85,8 @@ module.exports = BaseView.extend({
 
   render: function () {
     var _this = this;
-  	this.$el.html('<div id="map"><img class="logo" src="/img/logo-narrando-paisajes.svg"><div class="map_selector"><a class="peninsula" href="#"></a><a class="canary" href="#"></a></div><a class="articles_link" href="/articles" jslink>Artículos relacionados</a></div>');
+  	// this.$el.html('<div id="map"><img class="logo" src="/img/logo-narrando-paisajes.svg"><div class="map_selector"><a class="peninsula" href="#"></a><a class="canary" href="#"></a></div><a class="articles_link" href="/articles" jslink>Artículos relacionados</a></div>');
+    this.$el.html(this._template());
     
     // if(this._introView)
   	 // this.$el.append(this._introView.render().$el);
@@ -160,7 +162,7 @@ module.exports = BaseView.extend({
 
   _showHtmlElements:function(){
     this.$('#categories').addClass('active');
-    this.$('.mapbutton').addClass('enable');
+    this.$('.mapbutton_wrapper').addClass('enable');
     this.$('.articles_link').addClass('enable');
     this.$('#map').addClass('active');
   },
@@ -311,6 +313,18 @@ module.exports = BaseView.extend({
       $(el).removeClass('active');
       _this.$('div[id=' + $(el).attr('panel') + ']').removeClass('active');
     });
+
+    this.$('.mapbutton_wrapper .info_mapbutton, .articles_link .info_mapbutton').removeClass('hide');
+    if($(e.currentTarget).hasClass('active')){
+      var panel = $(e.currentTarget).attr('panel');
+      if(panel == 'linear_system'){
+        this.$('.mapbutton_wrapper.natural .info_mapbutton').addClass('hide');
+        $('.articles_link .info_mapbutton').addClass('hide');
+      }else if(panel == 'natural_spaces'){
+        this.$('.mapbutton_wrapper.linear_system .info_mapbutton').addClass('hide');
+        $('.articles_link .info_mapbutton').addClass('hide');
+      }
+    }
   },
 
   _openfilters:function(){

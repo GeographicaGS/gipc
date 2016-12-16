@@ -72,7 +72,7 @@ var App = module.exports = {
 			return 'infrastructure';
 
 		if(filter == 'escenario_asociado_acontecimiento_historico')
-			return 'geograph';
+			return 'historic';
 		
 	}
 

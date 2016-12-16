@@ -93,18 +93,19 @@ module.exports = BaseView.extend({
       }else{
         // layer.setInteraction(true);
         layer.getSubLayer(1).setInteraction(true);
-        layer.setInteractivity('cartodb_id')
+        // layer.getSubLayer(1).setInteraction(true);
+        layer.getSubLayer(1).setInteractivity('cartodb_id,label');
       }
 
-      layer.on('mouseover', function(e, latlng, pos, data) {
+      layer.getSubLayer(1).on('mouseover', function(e, latlng, pos, data) {
         $(_this.map._container).css('cursor', 'pointer');
       });
 
-      layer.on('mouseout', function(e, latlng, pos, data) {
+      layer.getSubLayer(1).on('mouseout', function(e, latlng, pos, data) {
         $(_this.map._container).css('cursor', 'auto');
       });
 
-      layer.on('featureClick', function(e, latlng, pos, data) {
+      layer.getSubLayer(1).on('featureClick', function(e, latlng, pos, data) {
         _this.$('.content .description span').remove();
         _this.$('.media').css({'background-image':''});
         _this.$('.media').html(_this._template_loading());
@@ -117,16 +118,21 @@ module.exports = BaseView.extend({
             if(data.get('rows')[0].tipo_media == 'video'){
               _this.$('.show_video').text('Ver vídeo');
               _this.$('.media').html('<iframe src="//player.vimeo.com/video/' + data.get('rows')[0].media_url + '?autoplay=1&color=2b2f35&loop=1" height="100%" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
+              
+              if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
+                _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
+            
             }else{
               _this.$('.show_video').text('Ver imagen');
               var bgImg = new Image();
               bgImg.onload = function(){
                 _this.$('.media').html('<div class="image_media" style="background-image:url(' + bgImg.src + ');"></div>')
+                if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
+                  _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
               };
               bgImg.src = data.get('rows')[0].media_url;
             }
-            if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
-              _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
+            
           }
         });
       });

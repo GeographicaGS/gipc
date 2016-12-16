@@ -36,7 +36,7 @@ module.exports = BaseView.extend({
   },
 
   _toggleAttribute:function(e){
-    $(e.currentTarget).toggleClass('active');
+    
     var column = $(e.currentTarget).attr('column');
     // _.each(this._collection.toJSON(),function(col) {
     //   var attribute = _.findWhere(col.attributes, {name_column: column});
@@ -44,8 +44,17 @@ module.exports = BaseView.extend({
     //     attribute.enable = !attribute.enable;
     // });
     var attribute = this._collection.findWhere({'name_column':column})
-    if(attribute)
-        attribute.set('enable',!attribute.get('enable'))
+    if(this._collection.where({'enable':false}).length == 0){
+      _.each(this._collection.models,function(a) {
+        a.set('enable',false);
+      });
+      attribute.set('enable',true)
+      this.$('li').not(e.currentTarget).removeClass('active');
+    }else{
+      $(e.currentTarget).toggleClass('active');
+      if(attribute)
+          attribute.set('enable',!attribute.get('enable'))
+    }
 
     if(this.$('li').not('.active').length > 0){
       this.$('.all').addClass('unselect');

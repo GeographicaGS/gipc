@@ -102,15 +102,19 @@ module.exports = StorylineView.extend({
           success: function(data){
             if(data.get('rows')[0].tipo_media == 'video'){
               _this.$('.media').html('<div class="video"><div class="close"></div><iframe src="//player.vimeo.com/video/' + data.get('rows')[0].media_url + '?autoplay=1&color=2b2f35&loop=1" height="100%" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
+              
+              if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
+                _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
+
             }else{
               var bgImg = new Image();
               bgImg.onload = function(){
                 _this.$('.media').html('<div class="video"><div class="close"></div><img src="' + bgImg.src + '"></div>');
+                if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
+                  _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
               };
               bgImg.src = data.get('rows')[0].media_url;
             }
-            if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
-              _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
           }
         });
       });
