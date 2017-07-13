@@ -22,23 +22,38 @@ module.exports = Backbone.Model.extend({
   },
 
   generateFilters:function(){
-    var filters = [];
+    // var filters = [];
     var _this = this;
-    _.each(this._attributesCollection.toJSON(), function(f) {
-      var attributes = 
-      _.filter(
-        _.map(f.attributes, function(a){ 
-          if(_this.get(a.name_column))
-            return a;
-          else
-            return null
-        }),
-      function(obj){ return obj != null });
-      if(attributes.length > 0)
-        filters.push({'grupo':f.grupo, 'attributes':attributes})
-    });
+    // _.each(this._attributesCollection.toJSON(), function(f) {
+    //   var attributes = 
+    //   _.filter(
+    //     _.map(f.attributes, function(a){ 
+    //       if(_this.get(a.name_column))
+    //         return a;
+    //       else
+    //         return null
+    //     }),
+    //   function(obj){ return obj != null });
+    //   if(attributes.length > 0)
+    //     filters.push({'grupo':f.grupo, 'attributes':attributes})
+    // });
+    
+    var f = this._attributesCollection.toJSON();
+    var attributes = 
+    _.filter(
+      _.map(f, function(a){ 
+        if(_this.get(a.name_column))
+          return a;
+        else
+          return null
+      }),
+    function(obj){ return obj != null });
 
-    return filters;
+    // if(attributes.length > 0)
+    //   filters.push({'grupo':f.grupo, 'attributes':attributes})
+    
+    return attributes;
+    // return filters;
   }
 
 });

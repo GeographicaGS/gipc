@@ -36,20 +36,44 @@ var App = module.exports = {
 	},
 
 	getClassByFilter:function(filter){
-		if(filter == 'Asentamientos')
-			return 'settlement';
-		if(filter == 'Declaración')
+		// if(filter == 'Asentamientos')
+		// 	return 'settlement';
+		// if(filter == 'Declaración')
+		// 	return 'declaration';
+		// if(filter == 'Infraestructuras')
+		// 	return 'infrastructure';
+		// if(filter == 'Manifestaciónes religiosas')
+		// 	return 'religion';
+		// if(filter == 'Normativa')
+		// 	return 'normative';
+		// if(filter == 'Sistema de explotación')
+		// 	return 'explotation';
+		// if(filter == 'Referentes geográficos')
+		// 	return 'geograph';
+		if(filter == 'actividad_agricola_ganadera_forestal')
 			return 'declaration';
-		if(filter == 'Infraestructuras')
-			return 'infrastructure';
-		if(filter == 'Manifestaciónes religiosas')
-			return 'religion';
-		if(filter == 'Normativa')
-			return 'normative';
-		if(filter == 'Sistema de explotación')
+
+		if(filter == 'actividad_industrial')
 			return 'explotation';
-		if(filter == 'Referentes geográficos')
+
+		if(filter == 'actividad_intercambio_comercial')
 			return 'geograph';
+
+		if(filter == 'actividad_relacionada_acontecimiento_social')
+			return 'religion';
+
+		if(filter == 'actividad_ofensivo_defensiva')
+			return 'normative';
+
+		if(filter == 'sistema_urbano_o_asentamiento_historico')
+			return 'settlement';
+
+		if(filter == 'grandes_infraestructuras')
+			return 'infrastructure';
+
+		if(filter == 'escenario_asociado_acontecimiento_historico')
+			return 'historic';
+		
 	}
 
 };

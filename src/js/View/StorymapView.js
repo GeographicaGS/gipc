@@ -9,7 +9,7 @@ var StorylineView = require('./StorylineView'),
     ;
 
 module.exports = StorylineView.extend({
-	
+
 	_template: require('../template/storymap_template.html'),
   _template_content: require('../template/storymap_content_template.html'),
   _template_loading: require('../template/loading_template.html'),
@@ -20,7 +20,7 @@ module.exports = StorylineView.extend({
     this._headerView = new HeaderView();
     this._attributes =  new AttributeCollection();
     this._model = new StoryMapModel({'id':options.id, 'collection':this._attributes});
-    
+
     this.listenTo(this._attributes,'reset',function(){
       _this._model.fetch({
         success: _this._onModelFetched
@@ -58,7 +58,7 @@ module.exports = StorylineView.extend({
     this.$('#storymap').addClass('active');
     this.$('.content').addClass(this._model.get('cat_color'));
 
-    this.$('.content').html(this._template_content({'m':this._model.toJSON(), 'filters':this._model.generateFilters()}));
+    this.$('.content').html(this._template_content({'m':this._model.toJSON()}));
     this.$('.content').append(this._storyInfoPanelView.render().el);
 
     this.map = new L.Map(this.$('.map')[0], {
@@ -66,8 +66,9 @@ module.exports = StorylineView.extend({
       scrollWheelZoom: true,
     });
 
-    L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',{ attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>' })
-      .addTo(this.map);
+    var tileBase = L.tileLayer('https://1.maps.nlp.nokia.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/256/png8?lg=es&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24');
+    tileBase.setOpacity(0.5);
+    tileBase.addTo(this.map);
 
     _this.map.fitBounds(L.latLngBounds(this._model.get('bbox')[1].reverse(), this._model.get('bbox')[3].reverse()));
 
@@ -102,15 +103,19 @@ module.exports = StorylineView.extend({
           success: function(data){
             if(data.get('rows')[0].tipo_media == 'video'){
               _this.$('.media').html('<div class="video"><div class="close"></div><iframe src="//player.vimeo.com/video/' + data.get('rows')[0].media_url + '?autoplay=1&color=2b2f35&loop=1" height="100%" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
+
+              if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
+                _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
+
             }else{
               var bgImg = new Image();
               bgImg.onload = function(){
                 _this.$('.media').html('<div class="video"><div class="close"></div><img src="' + bgImg.src + '"></div>');
+                if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
+                  _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
               };
               bgImg.src = data.get('rows')[0].media_url;
             }
-            if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
-              _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
           }
         });
       });

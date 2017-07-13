@@ -98,9 +98,9 @@ module.exports = BaseView.extend({
           layer = layer.getSubLayer(layer.layers.length-1);
           layer.setInteraction(true);
         }else{
-          layer.setInteraction(true);
-          layer.getSubLayer(0).setInteraction(true);
-          layer.setInteractivity('cartodb_id')
+          // layer.setInteraction(true);
+          // layer.getSubLayer(0).setInteraction(true);
+          // layer.setInteractivity('cartodb_id')
         }
 
         layer.on('mouseover', function(e, latlng, pos, data) {

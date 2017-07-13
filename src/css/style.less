@@ -136,7 +136,7 @@ body{
           }
         }
       }
-      .cartodb-popup.v2:before{
+      .cartodb-popup.v2.green:before{
         border-top: 14px solid @black;
       }
       div.cartodb-popup-header{
@@ -183,7 +183,13 @@ body{
       }
   	}
 
-    h4.filter, h6.filter{
+    .CDB-Tooltip.CDB-Tooltip--isDark{
+      color:@white;
+      background: rgba(0,0,0,.75);
+      padding: 5px 10px;
+    }
+
+    h4.filter, h6.filter, li.filter{
         &:before{
           position: relative;
           top:5px;
@@ -191,7 +197,7 @@ body{
         }
         &.settlement{
           &:before{
-            content: url('/img/GIPC-asentamientos.svg');
+            content: url('/img/GIPC-artisticas.svg');
           }
         }
         &.infrastructure{
@@ -201,12 +207,12 @@ body{
         }
         &.religion{
           &:before{
-            content: url('/img/GIPC-religiosas.svg');
+            content: url('/img/GIPC-icon-sociales.svg');
           } 
         }
         &.explotation{
           &:before{
-            content: url('/img/GIPC-explotacion.svg');
+            content: url('/img/GIPC-icon-industriales.svg');
           } 
         }
         &.declaration{
@@ -216,13 +222,60 @@ body{
         }
         &.normative{
           &:before{
-            content: url('/img/GIPC-normativa.svg');
+            content: url('/img/GIPC-icon-ofensivo.svg');
           } 
         }
         &.geograph{
           &:before{
-            content: url('/img/GIPC-geograficos.svg');
+            content: url('/img/GIPC-icon-comerciales.svg');
           } 
+        }
+        &.historic{
+            &:before{
+              content: url('/img/GIPC-icon-historico.svg');
+            } 
+          }
+        &.dark{
+          &.settlement{
+            &:before{
+              content: url('/img/GIPC-artisticas-2.svg');
+            }
+          }
+          &.infrastructure{
+            &:before{
+              content: url('/img/GIPC-infraestructuras-2.svg');
+            } 
+          }
+          &.religion{
+            &:before{
+              content: url('/img/GIPC-icon-sociales-2.svg');
+            } 
+          }
+          &.explotation{
+            &:before{
+              content: url('/img/GIPC-icon-industriales-2.svg');
+            } 
+          }
+          &.declaration{
+            &:before{
+              content: url('/img/GIPC-declaracion-2.svg');
+            } 
+          }
+          &.normative{
+            &:before{
+              content: url('/img/GIPC-icon-ofensivo-2.svg');
+            } 
+          }
+          &.geograph{
+            &:before{
+              content: url('/img/GIPC-icon-comerciales-2.svg');
+            } 
+          }
+          &.historic{
+            &:before{
+              content: url('/img/GIPC-icon-historico-2.svg');
+            } 
+          }
         }
       }
 
