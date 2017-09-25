@@ -3,7 +3,7 @@ var BaseView = require('./BaseView'),
 		LandscapeModel =  require('../Model/LandscapeModel');
 
 module.exports = BaseView.extend({
-	
+
 	_template: require('../template/tab_template.html'),
 	_template_info: require('../template/tab_info_template.html'),
 	_template_loading: require('../template/loading_template.html'),
@@ -59,14 +59,14 @@ module.exports = BaseView.extend({
 
   	this.$('.wrapper').html(this._template_info({'m':this._model.toJSON(), 'filters':this._model.generateFilters()}));
   	this._drawMap();
-  	
-  	setTimeout(function(){ 
+
+  	setTimeout(function(){
   		_this.$('.wrapper .info').addClass('active');
   	}, 100);
   },
 
   _drawMap:function(){
-  	
+
   	var location = [this._model.get('lat'),this._model.get('lng')];
 
     var map = new L.Map(this.$('.location_image')[0], {
@@ -76,7 +76,9 @@ module.exports = BaseView.extend({
       scrollWheelZoom:true
     });
 
-    L.tileLayer('https://1.maps.nlp.nokia.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/256/png8?lg=es&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24', {
+    // L.tileLayer('https://1.maps.nlp.nokia.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/256/png8?lg=es&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24', {
+    // }).addTo(map);
+		L.tileLayer('https://2.aerial.maps.cit.api.here.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/256/png8?lg=es&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24', {
     }).addTo(map);
 
 
@@ -99,7 +101,7 @@ module.exports = BaseView.extend({
         clickable:false,
         color: color
     };
-    
+
     // L.circleMarker(location, circleOptions).addTo(map);
 
   }

@@ -66,7 +66,8 @@ module.exports = StorylineView.extend({
       scrollWheelZoom: true,
     });
 
-    var tileBase = L.tileLayer('https://1.maps.nlp.nokia.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/256/png8?lg=es&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24');
+    // var tileBase = L.tileLayer('https://1.maps.nlp.nokia.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/256/png8?lg=es&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24');
+    var tileBase = L.tileLayer('https://2.aerial.maps.cit.api.here.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/256/png8?lg=es&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24');
     tileBase.setOpacity(0.5);
     tileBase.addTo(this.map);
 
@@ -101,20 +102,25 @@ module.exports = StorylineView.extend({
         model.url = 'https://' + config.username + '.carto.com/api/v2/sql?q=SELECT media_url,tipo_media,titulo_video,descripcion_video FROM modos_narrativos_point WHERE cartodb_id =' + data.cartodb_id;
         model.fetch({
           success: function(data){
-            if(data.get('rows')[0].tipo_media == 'video'){
-              _this.$('.media').html('<div class="video"><div class="close"></div><iframe src="//player.vimeo.com/video/' + data.get('rows')[0].media_url + '?autoplay=1&color=2b2f35&loop=1" height="100%" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
+            if(data.get('rows')[0].tipo_media) {
+              if(data.get('rows')[0].tipo_media == 'video'){
+                _this.$('.media').html('<div class="video"><div class="close"></div><iframe src="//player.vimeo.com/video/' + data.get('rows')[0].media_url + '?autoplay=1&color=2b2f35&loop=1" height="100%" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
 
-              if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
-                _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
-
-            }else{
-              var bgImg = new Image();
-              bgImg.onload = function(){
-                _this.$('.media').html('<div class="video"><div class="close"></div><img src="' + bgImg.src + '"></div>');
                 if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
                   _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
-              };
-              bgImg.src = data.get('rows')[0].media_url;
+
+              }else{
+                var bgImg = new Image();
+                bgImg.onload = function(){
+                  _this.$('.media').html('<div class="video"><div class="close"></div><img src="' + bgImg.src + '"></div>');
+                  if(data.get('rows')[0].titulo_video || data.get('rows')[0].descripcion_video)
+                    _this.$('.media').append('<div class="video_info"><h5>' + data.get('rows')[0].titulo_video + '</h5><p>' + data.get('rows')[0].descripcion_video + '</p></div>');
+                };
+                bgImg.src = data.get('rows')[0].media_url;
+              }
+
+            }else {
+              _this._closeVideo();
             }
           }
         });
