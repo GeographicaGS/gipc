@@ -13,7 +13,7 @@ var config = require('../Config.js'),
 ;
 
 module.exports = BaseView.extend({
-	
+
   _template: require('../template/map_template.html'),
 	_template_info_window_landScape: require('../template/infoWindowLandScape_template.html'),
   _torque_cartocss: require('../template/cartoCss/torque_cartocss.html'),
@@ -87,7 +87,7 @@ module.exports = BaseView.extend({
     var _this = this;
   	// this.$el.html('<div id="map"><img class="logo" src="/img/logo-narrando-paisajes.svg"><div class="map_selector"><a class="peninsula" href="#"></a><a class="canary" href="#"></a></div><a class="articles_link" href="/articles" jslink>Artículos relacionados</a></div>');
     this.$el.html(this._template());
-    
+
     // if(this._introView)
   	 // this.$el.append(this._introView.render().$el);
     // else
@@ -125,7 +125,8 @@ module.exports = BaseView.extend({
     this.map.on('zoomend', function() {
       if(_this._currentMap == 1 && _this.map.getZoom() >= 14){
         _this._currentMap = 2;
-        _this._baseLayer._url = 'https://1.maps.nlp.nokia.com/maptile/2.1/maptile/newest/hybrid.day/{z}/{x}/{y}/256/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24';
+        // _this._baseLayer._url = 'https://1.maps.nlp.nokia.com/maptile/2.1/maptile/newest/hybrid.day/{z}/{x}/{y}/256/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24';
+        _this._baseLayer._url = 'https://2.aerial.maps.cit.api.here.com/maptile/2.1/maptile/newest/hybrid.day/{z}/{x}/{y}/256/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24';
         _this._baseLayer.redraw();
       }else if(_this._currentMap == 2 && _this.map.getZoom() < 14){
         _this._currentMap = 1;
@@ -156,7 +157,7 @@ module.exports = BaseView.extend({
     //  this.$el.append(this._introView.render().$el);
     // else
     //   this._loadLandscapes();
-	
+
   	return this;
   },
 
@@ -173,18 +174,18 @@ module.exports = BaseView.extend({
   	// cartodb.createLayer(this.map, 'http://gipc-admin.carto.com/api/v2/viz/a629110e-598e-11e6-a374-0e3ff518bd15/viz.json', {'legends' : false})
    //  .addTo(this.map)
    //  .on('done', function(layer) {
-    	
+
    //  	layer.setInteraction(true);
    //    var sublayer = layer.getSubLayer(0);
    //    sublayer.setInteraction(true);
    //    // sublayer.setInteractivity
-      
+
    //    sublayer.setSQL('select * from table_100_paisajes_culturales where ' + _this._categories.getSQL());
    //   	// sublayer.infowindow.set('template', _this._template_info_window_landScape());
 
    //  })
    //  .on('error', function(err) {
-      
+
    //  });
 
     cartodb.createLayer(this.map, {
